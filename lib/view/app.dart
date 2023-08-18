@@ -1,9 +1,8 @@
 import 'package:flutter/material.dart';
-
 // ページ遷移先をインポート
-import 'screens/account.dart';
-import 'screens/alarm.dart';
-import 'screens/friends.dart';
+import 'pages/page_attack.dart';
+import 'pages/page_profile.dart';
+import 'pages/page_set_alarm.dart';
 
 class MyApp extends StatelessWidget {
   const MyApp({Key? key}) : super(key: key);
@@ -11,6 +10,7 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
+      debugShowCheckedModeBanner: false,  // でばっぐの表示を消す
       title: 'Flutter Demo',
       theme: ThemeData(
         primarySwatch: Colors.blue,
