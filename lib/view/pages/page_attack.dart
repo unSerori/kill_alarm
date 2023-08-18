@@ -1,17 +1,21 @@
-import 'package:flutter/material.dart';
+/**
+ * ふれんど爆弾機能
+ * 
+ * 起こす相手を選び、何で起こすかを決定し送信
+ */
 
+import 'package:flutter/material.dart';
+// こんぽーねんと？
 import '../app.dart';
+
 
 class ScreenFriends extends StatelessWidget {
   const ScreenFriends({Key? key}) : super(key: key);
 
-  //ClassName squareBox = ClassName();
-
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Center(
+      body: Center(  // ページの中身
         child: Container(
           width: double.infinity,
           decoration: const BoxDecoration(
