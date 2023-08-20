@@ -54,9 +54,9 @@ class MyStatefulWidget extends StatefulWidget {  // アプリケーションの�
 class _MyStatefulWidgetState extends State<MyStatefulWidget> {
   // ページをリストに入れる。
   static const _screens = [
-    ScreenFriends(),
-    ScreenAlarm(),
-    ScreenAccount(),
+    PageFriends(),
+    PageAlarm(),
+    PageAccount(),
   ];
 
   // ページをインデックスで指定するための変数を初期化。デフォルトで1(真ん中のページ)

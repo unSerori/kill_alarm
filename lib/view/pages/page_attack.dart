@@ -9,8 +9,8 @@ import 'package:flutter/material.dart';
 import '../app.dart';
 
 
-class ScreenFriends extends StatelessWidget {
-  const ScreenFriends({Key? key}) : super(key: key);
+class PageFriends extends StatelessWidget {
+  const PageFriends({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
