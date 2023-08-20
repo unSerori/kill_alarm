@@ -7,8 +7,8 @@
 import 'package:flutter/material.dart';
 
 
-class ScreenAlarm extends StatelessWidget {
-  const ScreenAlarm({Key? key}) : super(key: key);
+class PageAlarm extends StatelessWidget {
+  const PageAlarm({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
