@@ -1,14 +1,14 @@
 /**
- * 自分用アラームの設定。
+ * 鯖とのリクエストのテストファイル。
  * 
- * 時間と方法と強度。n分後に追加を設定
+ * 
  */
 
 import 'package:flutter/material.dart';
 
 
-class PageAccount extends StatelessWidget {
-  const PageAccount({Key? key}) : super(key: key);
+class PageServerReq extends StatelessWidget {
+  const PageServerReq({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {

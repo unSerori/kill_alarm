@@ -9,6 +9,7 @@ import 'package:flutter/material.dart';
 import 'pages/page_attack.dart';
 import 'pages/page_profile.dart';
 import 'pages/page_set_alarm.dart';
+import 'pages/test_req.dart';
 // その他必要なファイル
 import 'constant.dart';
 
@@ -82,6 +83,7 @@ class _MyStatefulWidgetState extends State<MyStatefulWidget> {
     PageAttack(),
     PageSetAlarm(),
     PageProfile(),
+    PageServerReq(),
   ];
 
   // ページをインデックスで指定するための変数を初期化。デフォルトで1(真ん中のページ)
@@ -112,6 +114,7 @@ class _MyStatefulWidgetState extends State<MyStatefulWidget> {
           BottomNavigationBarItem(icon: Icon(Icons.home), label: 'フレンド'),  // ここでIcons.hogeはflutter環境に用意されているアイコン  // labelはアイコンの下に表示
           BottomNavigationBarItem(icon: Icon(Icons.favorite), label: 'アラーム設定'),
           BottomNavigationBarItem(icon: Icon(Icons.person), label: 'アカウント'),
+          BottomNavigationBarItem(icon: Icon(Icons.verified), label: 'てすとぺーじ'),
         ],
         type: BottomNavigationBarType.fixed,  // アイテムを均等に配置
       )
