@@ -9,11 +9,13 @@ import 'package:flutter/material.dart';
 import '../app.dart';
 
 
-class PageFriends extends StatelessWidget {
-  const PageFriends({Key? key}) : super(key: key);
+class PageAttack extends StatelessWidget {
+  const PageAttack({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
+    var _screenSizeWidth = MediaQuery.of(context).size.width;  // 画面の大きさを保存しておく
+
     return Scaffold(
       body: Center(  // ページの中身
         child: Container(
@@ -27,8 +29,38 @@ class PageFriends extends StatelessWidget {
                       'フレンド爆弾画面',
                       style: TextStyle(fontSize: 32.0),
               ),
-              ClassName.square,
-            ],
+              //ClassName.square,
+              //ClassName.whiteBox(),
+              //ClassName.hoge(Text("hoge")),
+              //ClassName.hoge(Text("piyo")),
+
+              Components.whiteBox(
+                const Column(
+                  children: [
+                    Text("[ここが呼び出したぼっくすだ。]"),
+                    Row(
+                      mainAxisSize: MainAxisSize.max,
+                      mainAxisAlignment: MainAxisAlignment.spaceAround,
+                      children: [
+                        Text("[Components.whiteBox(うぃじぇっと, 横幅の大きさ)]"),
+                        Text("[やったぜ]"),
+                      ],
+                    )
+                  ],
+                ),
+                _screenSizeWidth,  // 横幅の大きさ
+              ),
+
+              //ClassName.hoge(),
+              //Container(),
+/*               ClassName.whiteBox(
+                _screenSize, 
+                const Column(
+                  Text("hoge"),
+                  Text("hoge"),
+                ),
+              ),
+ */            ],
           ),
         ),
       ),

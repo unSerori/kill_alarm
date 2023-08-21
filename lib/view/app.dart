@@ -30,7 +30,32 @@ class MyApp extends StatelessWidget {
 }
 
 
-class ClassName {  // こんぽーねんと？
+class Components {  // こんぽーねんと？
+
+  // widgetはColumnやRowを想定してるよ。
+  static Widget whiteBox(Widget widget, double _screenSizeWidth, {double widthRatio=0.8, double widthRatsio=0.8, double paddingHor=10, double paddingVer=25, }){
+    return Container(
+      width: _screenSizeWidth * widthRatio,
+      padding: EdgeInsets.symmetric(horizontal: paddingHor, vertical: paddingVer),
+      decoration: BoxDecoration(
+        color: Colors.white,
+        borderRadius: BorderRadius.circular(10),
+        boxShadow: const [
+          BoxShadow(
+            color: Colors.grey, //色
+            spreadRadius: 1, 
+            blurRadius: 1, 
+            offset: Offset(0, 2),
+          ),
+        ],
+      ),
+      child: widget, // BOXの中に配置するWidget
+    );
+  }
+
+
+
+
   static final square = Container(  // 白いぼっくす
     width: 200,
     height: 200,
@@ -54,9 +79,9 @@ class MyStatefulWidget extends StatefulWidget {  // アプリケーションの�
 class _MyStatefulWidgetState extends State<MyStatefulWidget> {
   // ページをリストに入れる。
   static const _screens = [
-    PageFriends(),
-    PageAlarm(),
-    PageAccount(),
+    PageAttack(),
+    PageSetAlarm(),
+    PageProfile(),
   ];
 
   // ページをインデックスで指定するための変数を初期化。デフォルトで1(真ん中のページ)

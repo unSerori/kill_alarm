@@ -7,8 +7,8 @@
 import 'package:flutter/material.dart';
 
 
-class PageAlarm extends StatelessWidget {
-  const PageAlarm({Key? key}) : super(key: key);
+class PageSetAlarm extends StatelessWidget {
+  const PageSetAlarm({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
