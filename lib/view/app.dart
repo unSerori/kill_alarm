@@ -55,8 +55,6 @@ class Components {  // こんぽーねんと？
   }
 
 
-
-
   static final square = Container(  // 白いぼっくす
     width: 200,
     height: 200,
@@ -65,7 +63,6 @@ class Components {  // こんぽーねんと？
       borderRadius: BorderRadius.circular(16.0),
     ),
   );
-
 }
 
 
@@ -79,10 +76,10 @@ class MyStatefulWidget extends StatefulWidget {  // アプリケーションの�
 
 class _MyStatefulWidgetState extends State<MyStatefulWidget> {
   // ページをリストに入れる。
-  static const _screens = [
-    PageAttack(),
-    PageSetAlarm(),
-    PageProfile(),
+  static final _screens = [
+    const PageAttack(),
+    const PageSetAlarm(),
+    const PageProfile(),
     PageServerReq(),
   ];
 
