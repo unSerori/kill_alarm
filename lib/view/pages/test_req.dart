@@ -5,6 +5,7 @@
  */
 
 import 'package:flutter/material.dart';
+import 'dart:io';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
 import 'package:jwt_decode/jwt_decode.dart';
@@ -24,12 +25,13 @@ class PageServerReq extends StatelessWidget {
   // fieldの中身　ユーザー名とパスワードを取得
   final controllerUserName = TextEditingController();
   final controllerPassword = TextEditingController();
-
-  baseUrl() {
+  baseUrl() {  // 鯖のURLを設定
     return protocol + "://" + serverIP + ":" + server_port;
   }
+
+
   // ボタンを押したときの処理
-  // ろぐいんぼたん
+  // ろぐいんぼたん  // POST, body username password を使ってログインする。
   buttonLogin()async{
     debugPrint(controllerUserName.text); // debug
     debugPrint(controllerPassword.text); // debug
@@ -38,7 +40,7 @@ class PageServerReq extends StatelessWidget {
       "username" : controllerUserName.text,
       "password" : controllerPassword.text,
     };
-    List logToken = await sendReq(baseUrl() + "/login", "POST", body, "");  // 
+    List logToken = await sendReq(baseUrl() + "/login", "POST", "", body);  // 
 
     if (logToken[0]) {
       debugPrint("01logToken[1]: " + logToken[1]);
@@ -56,8 +58,35 @@ class PageServerReq extends StatelessWidget {
 
     }
   }
+  
+  // ろぐあうと  // POST, header refToken を使ってろぐあうとする。
+  buttonLogout()async{
+    if (!isAuthed) {
+      debugPrint("認証しろあほ");
+      return;
+    }
+    debugPrint(controllerUserName.text);
+    debugPrint(controllerPassword.text);
+    debugPrint("ぼたんおしちゃったの？！");
+    var body = {
+      "": "",
+    };
 
-  // さいんあっぷ
+    List logToken = await sendReq(baseUrl() + "/logout", "POST", refToken, body);  // 
+
+    if (logToken[0]) {
+      debugPrint("01logToken[1]: " + logToken[1]);
+      Map<String, dynamic> jsonDecodeData = json.decode(logToken[1]);
+
+      String status = jsonDecodeData["status"].toString();
+      debugPrint("02すていたす[1]: " + status);
+
+    } else{
+      debugPrint("しんじゃった。" + logToken[1]);
+    }
+  }
+
+  // さいんあっぷ  // POST, body username password を使ってユーザー情報を設定しサインアップする。
   buttonSignup()async{
     debugPrint(controllerUserName.text);
     debugPrint(controllerPassword.text);
@@ -66,7 +95,7 @@ class PageServerReq extends StatelessWidget {
       "username" : controllerUserName.text,
       "password" : controllerPassword.text,
     };
-    List logToken = await sendReq(baseUrl() + "/signup", "POST", body, "");  // 
+    List logToken = await sendReq(baseUrl() + "/signup", "POST", "", body);  // 
 
     if (logToken[0]) {
       debugPrint("01logToken[1]: " + logToken[1]);
@@ -83,7 +112,7 @@ class PageServerReq extends StatelessWidget {
     }
   }
 
-  // ぷろふぃーる
+  // ぷろふぃーる  // GET, header accessToken を使ってプロフィール(useridとusername)を取得する。
   buttonGetProfile()async{
     if (!isAuthed) {
       debugPrint("認証しろあほ");
@@ -96,7 +125,7 @@ class PageServerReq extends StatelessWidget {
       "": ""
     };
 
-    List logToken = await sendReq(baseUrl() + "/get_profile", "GET", body, accessToken);  // 
+    List logToken = await sendReq(baseUrl() + "/get_profile", "GET", accessToken, body);  // 
 
     if (logToken[0]) {
       debugPrint("01logToken[1]: " + logToken[1]);
@@ -114,7 +143,7 @@ class PageServerReq extends StatelessWidget {
     }
   }
 
-  // 友達爆弾
+  // 友達爆弾  // POST, header accessToken と body friendid payloads を使って友達爆弾をセットする。
   buttonWakep()async{
     if (!isAuthed) {
       debugPrint("認証しろあほ");
@@ -132,11 +161,11 @@ class PageServerReq extends StatelessWidget {
       ]
     };
     
-    List logToken = await sendReq(baseUrl() + "/wakeup", "POST", body, accessToken);  // 
+    List logToken = await sendReq(baseUrl() + "/wakeup", "POST", accessToken, body);  // 
 
     if (logToken[0]) {
       debugPrint("01logToken[1]: " + logToken[1]);
-      Map<String, dynamic> jsonDecodeData = json.decode(logToken[1]);
+      // Map<String, dynamic> jsonDecodeData = json.decode(logToken[1]);
 
       // String userid = jsonDecodeData["userid"].toString();
       // String username = jsonDecodeData["username"].toString();
@@ -148,7 +177,7 @@ class PageServerReq extends StatelessWidget {
     }
   }
 
-  // IoTとの接続
+  // IoTとの接続  // POST, header accessToken と body deviceid を使ってIoTと接続する。
   buttonPairIoT()async{
     if (!isAuthed) {
       debugPrint("認証しろあほ");
@@ -158,34 +187,181 @@ class PageServerReq extends StatelessWidget {
     debugPrint(controllerPassword.text);
     debugPrint("ぼたんおしちゃったの？！");
     var body = {
-      "deviceid": "29f4c1d54cdcefff1caec92b4e0c37693a395158a74bea2f3622ad6cb1e38cc520ef34471dd3458d1e4bfc6db1ba33e515fb5f01c6f7e83fb1913c805a25af03"
+      "deviceid": "3b5872465adda1a3c165b52bef1e5d544c8a13463e626fd3d74799ff00396d8314346797616fe22084e4edf82a96efcae0e3d4c39649a6b5f454b5d9c9ff812b"
     };
 
-    List logToken = await sendReq(baseUrl() + "/pair_iot", "POST", body, accessToken);  // 
+    List logToken = await sendReq(baseUrl() + "/pair_iot", "POST", accessToken, body);  // 
 
     if (logToken[0]) {
       debugPrint("01logToken[1]: " + logToken[1]);
       Map<String, dynamic> jsonDecodeData = json.decode(logToken[1]);
 
-      // String userid = jsonDecodeData["userid"].toString();
-      // String username = jsonDecodeData["username"].toString();
-      // debugPrint("02ゆーざーあいで[1]: " + userid);
-      // debugPrint("02ゆーざーねーむ[1]: " + username);
+      String msgtype = jsonDecodeData["msgtype"].toString();
+      String message = jsonDecodeData["message"].toString();
+      String msgcode = jsonDecodeData["msgcode"].toString();
+      String deviceid = jsonDecodeData["deviceid"].toString();
+      debugPrint("02せいこうかしっぱい[1]: " + msgtype);
+      debugPrint("02めっせじ[1]: " + message);
+      debugPrint("02めっせじこーど[1]: " + msgcode);
+      debugPrint("02でばいすあいでぃ[1]: " + deviceid);
 
     } else{
       debugPrint("しんじゃった。" + logToken[1]);
     }
   }
 
+  // IoTとの接続解除  // POST, header accessToken を使ってIoTとの接続を解除。
+  buttonUnPairIoT()async{
+    if (!isAuthed) {
+      debugPrint("認証しろあほ");
+      return;
+    }
+    debugPrint(controllerUserName.text);
+    debugPrint(controllerPassword.text);
+    debugPrint("ぼたんおしちゃったの？！");
+    var body = {
+      "": "",
+    };
+
+    List logToken = await sendReq(baseUrl() + "/unpair_iot", "POST", accessToken, body);  // 
+
+    if (logToken[0]) {
+      debugPrint("01logToken[1]: " + logToken[1]);
+      Map<String, dynamic> jsonDecodeData = json.decode(logToken[1]);
+
+      String msgtype = jsonDecodeData["msgtype"].toString();
+      String message = jsonDecodeData["message"].toString();
+      String msgcode = jsonDecodeData["msgcode"].toString();
+      debugPrint("02せいこうかしっぱい[1]: " + msgtype);
+      debugPrint("02めっせじ[1]: " + message);
+      debugPrint("02めっせじこーど[1]: " + msgcode);
+
+    } else{
+      debugPrint("しんじゃった。" + logToken[1]);
+    }
+  }
+
+  // れふれっしゅとーくん  // GET, header refToken を使ってaccesstokenを生成しなおす
+  buttonRefreshToken()async{
+    if (!isAuthed) {
+      debugPrint("認証しろあほ");
+      return;
+    }
+    debugPrint(controllerUserName.text);
+    debugPrint(controllerPassword.text);
+    debugPrint("ぼたんおしちゃったの？！");
+    var body = {
+      "": "",
+    };
+
+    List logToken = await sendReq(baseUrl() + "/refresh_token", "GET", refToken, body);  // 
+
+    if (logToken[0]) {
+      debugPrint("01logToken[1]: " + logToken[1]);
+      Map<String, dynamic> jsonDecodeData = json.decode(logToken[1]);
+
+      String status = jsonDecodeData["status"].toString();
+      debugPrint("02すていたす[1]: " + status);
+
+    } else{
+      debugPrint("しんじゃった。" + logToken[1]);
+    }
+  }
+
+  // ユーザー登録削除  // DELETE, header refToken を使ってアカウント情報を削除。
+  buttonDeleteUser()async{
+    if (!isAuthed) {
+      debugPrint("認証しろあほ");
+      return;
+    }
+    debugPrint(controllerUserName.text);
+    debugPrint(controllerPassword.text);
+    debugPrint("ぼたんおしちゃったの？！");
+    var body = {
+      "": "",
+    };
+
+    List logToken = await sendReq(baseUrl() + "/delete_user", "DELETE", refToken, body);  // 
+
+    if (logToken[0]) {
+      debugPrint("01logToken[1]: " + logToken[1]);
+      Map<String, dynamic> jsonDecodeData = json.decode(logToken[1]);
+
+      String status = jsonDecodeData["status"].toString();
+      debugPrint("02すていたす[1]: " + status);
+
+    } else{
+      debugPrint("しんじゃった。" + logToken[1]);
+    }
+  }
+
+  // アイコン変更  // POST, header ？ を使ってアイコンを変更。
+  buttonChangeIcon()async{
+    if (!isAuthed) {
+      debugPrint("認証しろあほ");
+      return;
+    }
+    debugPrint(controllerUserName.text);
+    debugPrint(controllerPassword.text);
+    debugPrint("ぼたんおしちゃったの？！");
+
+    var headersList = {
+      'Accept': '*/*',
+      'User-Agent': 'Thunder Client (https://www.thunderclient.com)',
+      'Content-Type': 'application/octet-stream', 
+      'Authorization': 'Bearer ' + accessToken, 
+    };
+
+    // リクエストurlをUri.parse()でuriにパース パース...URLの文字列を役割ごとに分解すること
+    var uri = Uri.parse(baseUrl() + "/change_icon");
+
+    // 使うファイルのパスを指定
+    var iconPath = File("C:\\Users\\2230105\\Desktop\\flutter\\test_project1\\assets\\images\\test.png");
+    // パスで指定したファイルをバイナリに変換
+    final response = await multipart(
+      method: 'POST',
+      url: uri,
+      files: [
+        http.MultipartFile.fromBytes(
+          'file',
+          iconPath.readAsBytesSync(),
+        ),
+      ],
+    );
+
+    print(response.statusCode);
+    print(response.body);
+  }
+
+  Future<http.Response> multipart({
+    required String method,
+    required Uri url,
+    required List<http.MultipartFile> files,
+  }) async {
+    final request = http.MultipartRequest(method, url);
+
+    request.files.addAll(files); // 送信するファイルのバイナリデータを追加
+    request.headers.addAll({'Authorization': 'Bearer ' + accessToken,'Content-Type': 'application/json'}); // 認証情報などを追加
+
+    final stream = await request.send();
+
+    return http.Response.fromStream(stream).then((response) {
+      if (response.statusCode == 200) {
+        return response;
+      }
+
+      return Future.error(response);
+    });
+  }
 
   // リクエストを投げる万能関数
-  sendReq(String reqUrl, String method, Map<String, dynamic> body, String token) async {
+  sendReq(String reqUrl, String method, String bearer, Map<String, dynamic> body) async {
     // リクエストのヘッダ
     var headersList = {
       'Accept': '*/*',
-      //'User-Agent': 'Thunder Client (https://www.thunderclient.com)',
+      'User-Agent': 'Thunder Client (https://www.thunderclient.com)',
       'Content-Type': 'application/json',
-      'Authorization': 'Bearer ' + token, 
+      'Authorization': 'Bearer ' + bearer, 
     };
     // リクエストurlをUri.parse()でuriにパース パース...URLの文字列を役割ごとに分解すること
     var uri = Uri.parse(reqUrl);
@@ -196,9 +372,9 @@ class PageServerReq extends StatelessWidget {
     // リクエスト作成
     var req = http.Request(method, uri);  // HTTPリクエストメソッドの種類とuriから
       // debugPrint(req.toString());
-    req.headers.addAll(headersList); // header情報を追加
+    req.headers.addAll(headersList);  // header情報を追加
       // debugPrint(req.toString());
-    req.body = json.encode(body); // bodyをjson形式に変換
+    req.body = json.encode(body);  // bodyをjson形式に変換
       // debugPrint(req.toString());
 
     try {
@@ -265,9 +441,18 @@ class PageServerReq extends StatelessWidget {
                 backgroundColor: Colors.blue,
               ),
               child: Text("ろぐいん"),
+            ),
+            
+            // ろぐあうと
+            ElevatedButton(
+              onPressed: buttonLogout, 
+              style: ElevatedButton.styleFrom(
+                backgroundColor: Colors.blue,
+              ),
+              child: Text("ろぐあうと"),
+            ),
 
             // サインあっぷ
-            ),
             ElevatedButton(
               onPressed: buttonSignup, 
               style: ElevatedButton.styleFrom(
@@ -302,6 +487,43 @@ class PageServerReq extends StatelessWidget {
               ),
               child: Text("IoTとの紐づけ設定"),
             ),
+
+            // IoTとの紐づけ解除
+            ElevatedButton(
+              onPressed: buttonUnPairIoT, 
+              style: ElevatedButton.styleFrom(
+                backgroundColor: Colors.blue,
+              ),
+              child: Text("IoTとの紐づけ解除"),
+            ),
+
+            // れふれっしゅとーくん
+            ElevatedButton(
+              onPressed: buttonRefreshToken, 
+              style: ElevatedButton.styleFrom(
+                backgroundColor: Colors.blue,
+              ),
+              child: Text("れふれっしゅとーくん"),
+            ),
+
+            // ユーザー登録削除
+            ElevatedButton(
+              onPressed: buttonDeleteUser, 
+              style: ElevatedButton.styleFrom(
+                backgroundColor: Colors.blue,
+              ),
+              child: Text("ユーザー登録削除"),
+            ),
+
+            // アイコン変更
+            ElevatedButton(
+              onPressed: buttonChangeIcon, 
+              style: ElevatedButton.styleFrom(
+                backgroundColor: Colors.blue,
+              ),
+              child: Text("アイコン変更"),
+            ),
+
           ],
         ),
       ),
