@@ -16,17 +16,22 @@ class PageServerReq extends StatelessWidget {
   PageServerReq({Key? key}) : super(key: key);
 
   // 必要な変数の初期化とIP関連の設定
+  // httpTokens
   static String refToken = "";  // 
   static String accessToken = "";  // 
-  static bool isAuthed = false;  // ログイン前提の処理で使う。
-  static const String serverIP = "127.0.0.1";  // "127.0.0.1""10.200.0.82""tidalhip.local""10.200.0.115"
+  // ws
+  static String requestid = "";
+  // ログイン前提の処理で使う。
+  static bool isAuthed = false;  
+  // URLとかポートとかプロトコルとか
+  static const String serverIP = "10.200.0.163";  // "127.0.0.1""10.200.0.82""tidalhip.local""10.200.0.115"10.25.10.107
   static const String server_port = "8000";
   static const String protocol = "http";
   baseUrl() {  // 鯖のURLを設定
     return protocol + "://" + serverIP + ":" + server_port;
   }
   // ws通信の接続先を指定
-  final _channel = WebSocketChannel.connect(
+  var _channel = WebSocketChannel.connect(
     Uri.parse("ws://" + serverIP + ":" + server_port + "/userws"), 
   );
   
@@ -34,7 +39,6 @@ class PageServerReq extends StatelessWidget {
   final controllerUserName = TextEditingController();  // ユーザー名
   final controllerPassword = TextEditingController();  // パスワード
   final controllerFriendID = TextEditingController(); // debug // フレンド入力 // 実際にはボタン処理ではない
-
 
 
   // ボタンを押したときの処理
@@ -371,6 +375,8 @@ class PageServerReq extends StatelessWidget {
     debugPrint(message.toString());
     Map<String,dynamic> decode_dict = json.decode(message.toString());
 
+    requestid = decode_dict["requestid"].toString();
+
     switch (decode_dict["msgcode"].toString()) {
       case "11131":
         break;
@@ -402,14 +408,22 @@ class PageServerReq extends StatelessWidget {
       List<String> test = [""];
       // ws通信で認証をする
       // 受信する
+      
+      try {
+        _channel.sink.close();
+      } catch (ex) {
+        
+      }
+
+      _channel = WebSocketChannel.connect(
+        Uri.parse("ws://" + serverIP + ":" + server_port + "/userws"), 
+      );
       try {
         _channel.stream.listen((message) {
           ws_message(message);
         });
       } catch (ex) {
-
       }
-
       // 送る中身
       var authMsg = {
           "msgtype" : "authToken",
@@ -471,6 +485,9 @@ class PageServerReq extends StatelessWidget {
     }
   }
 
+
+  // ws通信で認証をする
+  // useridを取得
   getUserid(String username) async {
     var id_data = await sendReq(baseUrl() + "/getId/" + username, "GET", "",{}); 
     
@@ -484,28 +501,31 @@ class PageServerReq extends StatelessWidget {
 
     return "";
   }
-  // ws通信で認証をする
+
   // フレンドリクエスト
   wsFriendReq()async{//String friendid
-
+    // friendidを取る
     String friend_userid = await getUserid(controllerFriendID.text);
+    if(friend_userid.isEmpty) {
+      debugPrint("ユーザーが存在しません。");
+      return;  // 早期リターン
+    }
 
     debugPrint(friend_userid);
-
     debugPrint(controllerFriendID.text);
+
     // 送る中身
     var friendReq = {
       "msgtype" : "friend_request",
-      "friendid" : friend_userid//friendid
+      "friendid" : friend_userid, //friendid
     };
     // 送る
-    _channel.sink.add(json.encode(friendReq));
-
-    debugPrint("owatta");
-  
+    _channel.sink.add(json.encode(friendReq)); 
   }
 
-  get_friends() async { 
+  // フレンド一覧取得
+  get_friends() async {
+    // 送る中身
     var data = {
       "msgtype" : "get_friends",
     };
@@ -513,37 +533,136 @@ class PageServerReq extends StatelessWidget {
     _channel.sink.add(json.encode(data));
   }
 
+  // リクエスト承認
+  accept_request() async{
+    // friendidを取る
+    String friend_userid = await getUserid(controllerFriendID.text);
+    if(friend_userid.isEmpty) {
+      debugPrint("ユーザーが存在しません。");
+      return;  // 早期リターン
+    }
+
+    // 送る中身
+    var data = {
+      "msgtype": "accept_request",
+      "accept_request": friend_userid,
+    };
+    // 送る
+    _channel.sink.add(json.encode(data));
+  }
+  
+  // リクエスト拒否
+  reject_request()async{
+    // friendidを取る
+    String friend_userid = await getUserid(controllerFriendID.text);
+    if(friend_userid.isEmpty) {
+      debugPrint("ユーザーが存在しません。");
+      return;  // 早期リターン
+    }
+
+    // 送る中身
+    var data = {
+      "msgtype": "reject_request",
+      "reject_request": friend_userid,
+    };
+    // 送る
+    _channel.sink.add(json.encode(data));
+  }
+
+  // キャンセルリクエスト
+  cancel_request()async{
+    // friendidを取る
+    String friend_userid = await getUserid(controllerFriendID.text);
+    if(friend_userid.isEmpty) {
+      debugPrint("ユーザーが存在しません。");
+      return;  // 早期リターン
+    }
+
+    // 送る中身
+    var data = {
+      "msgtype": "reject_request",
+      "reject_request": friend_userid,
+    };
+    // 送る
+    _channel.sink.add(json.encode(data));
+  }
+
+  // フレンド削除
+  remove_friend()async{
+    // friendidを取る
+    String friend_userid = await getUserid(controllerFriendID.text);
+    if(friend_userid.isEmpty) {
+      debugPrint("ユーザーが存在しません。");
+      return;  // 早期リターン
+    }
+
+    // 送る中身
+    var data = {
+      "msgtype": "remove_friend",
+      "remove_friend": friend_userid,
+    };
+    // 送る
+    _channel.sink.add(json.encode(data));
+  }
+
+  // 受信済みフレンド一覧
+  recved_requests()async{
+    // 送る中身
+    var data = {
+      "msgtype" : "recved_requests",
+    };
+    // 送る
+    _channel.sink.add(json.encode(data));
+  }
+
+  // 送信済みフレンド一覧
+  sended_requests()async{
+    // 送る中身
+    var data = {
+      "msgtype" : "sended_requests",
+    };
+    // 送る
+    _channel.sink.add(json.encode(data));
+  }
+
+
 
 /* 
 フレンドリクエスト
 {
-    "friendid":""
+    "friendid":"相手のユーザID"
 }
 
 リクエスト承認
 {
-    "accept_request":""
+    "accept_request":"requestid"
 }
 
 リクエスト拒否
 {
-    "reject_request":""
+    "reject_request":"requestid"
 }
 
 キャンセルリクエスト
 {
-    "cancel_request":""
+    "cancel_request":"requestid"
 }
 
 フレンド削除
 {
-    "remove_friend" : ""
+    "remove_friend" : "フレンドID"
 }
 
 フレンド取得
 {
 
-}
+} 
+accept_request
+reject_request
+cancel_request
+remove_friend
+recved_requests
+sended_requests
  */
 
 
@@ -683,7 +802,7 @@ class PageServerReq extends StatelessWidget {
             ),
 
             // フレンドリクエスト
-            SizedBox(
+            SizedBox(  // ここのテキストフィールドは実際には使わない
               width: _screenSizeWidth * 0.8,
               child: TextField(
               controller: controllerFriendID,  // 入力内容を入れる
@@ -702,12 +821,68 @@ class PageServerReq extends StatelessWidget {
               ),
               child: Text("フレンドリクエストを送る"),
             ),
+
+            // フレンド一覧取得
             ElevatedButton(
               onPressed: get_friends, //wsFriendReq(controllerFriendID.text),  // 送る先のフレンドIDを指定する
-              style: EleavatedButton.styleFrom(
+              style: ElevatedButton.styleFrom(
                 backgroundColor: Colors.blue,
               ),
               child: Text("フレンド一覧取得"),
+            ),
+
+            // リクエスト承認
+            ElevatedButton(
+              onPressed: accept_request, //wsFriendReq(controllerFriendID.text),  // 送る先のフレンドIDを指定する
+              style: ElevatedButton.styleFrom(
+                backgroundColor: Colors.blue,
+              ),
+              child: Text("リクエスト承認"),
+            ),
+
+            // リクエスト拒否
+            ElevatedButton(
+              onPressed: reject_request, //wsFriendReq(controllerFriendID.text),  // 送る先のフレンドIDを指定する
+              style: ElevatedButton.styleFrom(
+                backgroundColor: Colors.blue,
+              ),
+              child: Text("リクエスト拒否"),
+            ),
+
+            // キャンセルリクエスト
+            ElevatedButton(
+              onPressed: cancel_request, //wsFriendReq(controllerFriendID.text),  // 送る先のフレンドIDを指定する
+              style: ElevatedButton.styleFrom(
+                backgroundColor: Colors.blue,
+              ),
+              child: Text("キャンセルリクエスト"),
+            ),
+
+            // フレンド削除
+            ElevatedButton(
+              onPressed: remove_friend, //wsFriendReq(controllerFriendID.text),  // 送る先のフレンドIDを指定する
+              style: ElevatedButton.styleFrom(
+                backgroundColor: Colors.blue,
+              ),
+              child: Text("フレンド削除"),
+            ),
+
+            // 受信済みフレンド一覧
+            ElevatedButton(
+              onPressed: recved_requests, //wsFriendReq(controllerFriendID.text),  // 送る先のフレンドIDを指定する
+              style: ElevatedButton.styleFrom(
+                backgroundColor: Colors.blue,
+              ),
+              child: Text("受信済みフレンド一覧"),
+            ),
+
+            // 送信済みフレンド一覧
+            ElevatedButton(
+              onPressed: sended_requests, //wsFriendReq(controllerFriendID.text),  // 送る先のフレンドIDを指定する
+              style: ElevatedButton.styleFrom(
+                backgroundColor: Colors.blue,
+              ),
+              child: Text("送信済みフレンド一覧"),
             ),
 
           ],
