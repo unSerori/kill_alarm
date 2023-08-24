@@ -9,6 +9,7 @@ import 'dart:io';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
 import 'package:jwt_decode/jwt_decode.dart';
+import 'package:web_socket_channel/web_socket_channel.dart';
 
 
 class PageServerReq extends StatelessWidget {
@@ -21,13 +22,19 @@ class PageServerReq extends StatelessWidget {
   static const String serverIP = "127.0.0.1";  // "127.0.0.1""10.200.0.82""tidalhip.local""10.200.0.115"
   static const String server_port = "8000";
   static const String protocol = "http";
-
-  // fieldの中身　ユーザー名とパスワードを取得
-  final controllerUserName = TextEditingController();
-  final controllerPassword = TextEditingController();
   baseUrl() {  // 鯖のURLを設定
     return protocol + "://" + serverIP + ":" + server_port;
   }
+  // ws通信の接続先を指定
+  final _channel = WebSocketChannel.connect(
+    Uri.parse("ws://" + serverIP + ":" + server_port + "/userws"), 
+  );
+  
+  // fieldの中身を取得
+  final controllerUserName = TextEditingController();  // ユーザー名
+  final controllerPassword = TextEditingController();  // パスワード
+  final controllerFriendID = TextEditingController(); // debug // フレンド入力 // 実際にはボタン処理ではない
+
 
 
   // ボタンを押したときの処理
@@ -311,48 +318,114 @@ class PageServerReq extends StatelessWidget {
       'Content-Type': 'application/octet-stream', 
       'Authorization': 'Bearer ' + accessToken, 
     };
-
+/*
     // リクエストurlをUri.parse()でuriにパース パース...URLの文字列を役割ごとに分解すること
     var uri = Uri.parse(baseUrl() + "/change_icon");
 
-    // 使うファイルのパスを指定
+     // 使うファイルのパスを指定
     var iconPath = File("C:\\Users\\2230105\\Desktop\\flutter\\test_project1\\assets\\images\\test.png");
-    // パスで指定したファイルをバイナリに変換
-    final response = await multipart(
-      method: 'POST',
-      url: uri,
-      files: [
-        http.MultipartFile.fromBytes(
-          'file',
-          iconPath.readAsBytesSync(),
-        ),
-      ],
-    );
 
-    print(response.statusCode);
-    print(response.body);
-  }
+    // パスで指定したファイルでリクエストを作成
+    var request = http.MultipartRequest('POST', Uri.parse(uri));
+    request.files.add(await http.MultipartFile.fromPath('image', selectedImage.path));
+    // リクエスト作成
+    var req = http.Request(method, uri);  // HTTPリクエストメソッドの種類とuriから
+      // debugPrint(req.toString());
+    req.headers.addAll(headersList);  // header情報を追加
+      // debugPrint(req.toString());
+    req.body = json.encode(body);  // bodyをjson形式に変換
+      // debugPrint(req.toString());
 
-  Future<http.Response> multipart({
-    required String method,
-    required Uri url,
-    required List<http.MultipartFile> files,
-  }) async {
-    final request = http.MultipartRequest(method, url);
+    try {
 
-    request.files.addAll(files); // 送信するファイルのバイナリデータを追加
-    request.headers.addAll({'Authorization': 'Bearer ' + accessToken,'Content-Type': 'application/json'}); // 認証情報などを追加
+      // HTTPリクエストを送信。 seconds: 5 で指定した秒数応答がなかったらタイムアウトで例外を発生させる
+      var res = await req.send().timeout(const Duration(seconds: 5));
+      // レスポンスをストリームから文字列に変換して保存
+      final resBody = await res.stream.bytesToString();
 
-    final stream = await request.send();
+      // ステータスコードが正常ならtrueと内容を返す
+      if (res.statusCode >= 200 && res.statusCode < 300) {
+        // return [true, resBody];
+      debugPrint("01logToken[1]: " + [true, resBody][1].toString());
+      Map<String, dynamic> jsonDecodeData = json.decode([true, resBody][1].toString());
 
-    return http.Response.fromStream(stream).then((response) {
-      if (response.statusCode == 200) {
-        return response;
+      String status = jsonDecodeData["status"].toString();
+      debugPrint("02すていたす[1]: " + status);
+
+      } else {
+        // return [false, res.statusCode.toString(), resBody];
+        debugPrint("しんじゃった。" + [false, res.statusCode.toString(), resBody][1].toString());
       }
 
-      return Future.error(response);
-    });
+    } catch (e) {  // タイムアウトしたとき。
+
+      // return [false, "おうとうないよ；；"];
+      debugPrint("しんじゃった。" + [false, "おうとうないよ；；"][1].toString());
+
+    }
+ */ 
   }
+
+  //Websocketメッセージ
+  ws_message(String message) {
+    debugPrint(message.toString());
+    Map<String,dynamic> decode_dict = json.decode(message.toString());
+
+    switch (decode_dict["msgcode"].toString()) {
+      case "11131":
+        break;
+    }
+  }
+
+  // wsのトークン取得
+  buttonWsToken()async{
+    if (!isAuthed) {
+      debugPrint("認証しろあほ");
+      return;
+    }
+    debugPrint(controllerUserName.text);
+    debugPrint(controllerPassword.text);
+    debugPrint("ぼたんおしちゃったの？！");
+    var body = {
+      "": ""
+    };
+
+    List logToken = await sendReq(baseUrl() + "/ws_token", "GET", accessToken, body);  // 
+
+    if (logToken[0]) {
+      debugPrint(logToken.toString());
+      debugPrint("01logToken[1]: " + logToken[1]);
+      Map<String, dynamic> jsonDecodeData = json.decode(logToken[1]);
+      String wsToken = jsonDecodeData["token"].toString();
+      
+      debugPrint("うぇぶそけっとのとーくん[1]: " + wsToken);
+      List<String> test = [""];
+      // ws通信で認証をする
+      // 受信する
+      try {
+        _channel.stream.listen((message) {
+          ws_message(message);
+        });
+      } catch (ex) {
+
+      }
+
+      // 送る中身
+      var authMsg = {
+          "msgtype" : "authToken",
+          "token" : wsToken,
+      };
+
+      //debugPrint(json.encode(authMsg).toString()); // debug
+      // 送る
+      _channel.sink.add(json.encode(authMsg));
+
+    } else{
+      debugPrint("しんじゃった。" + logToken[1]);
+      debugPrint("logToken[2]: " + logToken[2]);
+    }
+  }
+
 
   // リクエストを投げる万能関数
   sendReq(String reqUrl, String method, String bearer, Map<String, dynamic> body) async {
@@ -397,6 +470,81 @@ class PageServerReq extends StatelessWidget {
 
     }
   }
+
+  getUserid(String username) async {
+    var id_data = await sendReq(baseUrl() + "/getId/" + username, "GET", "",{}); 
+    
+    if (id_data[0]) {
+      Map<String,dynamic> decode_data = json.decode(id_data[1]);
+
+      debugPrint(decode_data["userid"].toString());
+
+      return decode_data["userid"].toString();
+    }
+
+    return "";
+  }
+  // ws通信で認証をする
+  // フレンドリクエスト
+  wsFriendReq()async{//String friendid
+
+    String friend_userid = await getUserid(controllerFriendID.text);
+
+    debugPrint(friend_userid);
+
+    debugPrint(controllerFriendID.text);
+    // 送る中身
+    var friendReq = {
+      "msgtype" : "friend_request",
+      "friendid" : friend_userid//friendid
+    };
+    // 送る
+    _channel.sink.add(json.encode(friendReq));
+
+    debugPrint("owatta");
+  
+  }
+
+  get_friends() async { 
+    var data = {
+      "msgtype" : "get_friends",
+    };
+    // 送る
+    _channel.sink.add(json.encode(data));
+  }
+
+
+/* 
+フレンドリクエスト
+{
+    "friendid":""
+}
+
+リクエスト承認
+{
+    "accept_request":""
+}
+
+リクエスト拒否
+{
+    "reject_request":""
+}
+
+キャンセルリクエスト
+{
+    "cancel_request":""
+}
+
+フレンド削除
+{
+    "remove_friend" : ""
+}
+
+フレンド取得
+{
+
+}
+ */
 
 
   @override
@@ -522,6 +670,44 @@ class PageServerReq extends StatelessWidget {
                 backgroundColor: Colors.blue,
               ),
               child: Text("アイコン変更"),
+            ),
+
+            // ws
+            // ws_token
+            ElevatedButton(
+              onPressed: buttonWsToken, 
+              style: ElevatedButton.styleFrom(
+                backgroundColor: Colors.blue,
+              ),
+              child: Text("wsのトークン取得"),
+            ),
+
+            // フレンドリクエスト
+            SizedBox(
+              width: _screenSizeWidth * 0.8,
+              child: TextField(
+              controller: controllerFriendID,  // 入力内容を入れる
+                decoration: const InputDecoration(
+                  border: OutlineInputBorder(),  // 枠
+                  labelText: "ここはゆーざめいだ。",
+                  hintText: "にほんごでおｋ",
+                  errorText: "みすってるやで",  // 実際には出したり出さなかったり
+                ),
+              ),
+            ),
+            ElevatedButton(
+              onPressed: wsFriendReq, //wsFriendReq(controllerFriendID.text),  // 送る先のフレンドIDを指定する
+              style: ElevatedButton.styleFrom(
+                backgroundColor: Colors.blue,
+              ),
+              child: Text("フレンドリクエストを送る"),
+            ),
+            ElevatedButton(
+              onPressed: get_friends, //wsFriendReq(controllerFriendID.text),  // 送る先のフレンドIDを指定する
+              style: EleavatedButton.styleFrom(
+                backgroundColor: Colors.blue,
+              ),
+              child: Text("フレンド一覧取得"),
             ),
 
           ],
