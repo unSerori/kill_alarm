@@ -38,6 +38,17 @@ dependencies:
   http: ^1.1.0
   jwt_decode: ^0.3.1
 
+  google_fonts: ^4.0.4
+  font_awesome_flutter: ^10.5.0
+  flutter_native_splash: ^2.3.2
+  flutter_riverpod: ^2.3.7
+
+flutter_native_splash:
+  color: "#aeeeea"
+  image: assets/splash.png
+  fullScreen: true
+
+
 dev_dependencies:
   flutter_test:
     sdk: flutter
@@ -62,7 +73,9 @@ flutter:
 
   # To add assets to your application, add an assets section, like this:
   assets:
-    - assets/images/
+    - assets/icons/
+    - assets/profile_image.png
+    - assets/
   
   # assets:
   #   - images/a_dot_burr.jpeg
