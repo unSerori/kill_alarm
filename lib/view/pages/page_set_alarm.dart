@@ -1,8 +1,4 @@
-/**
- * プロフィールとフレンド機能
- * 
- * プロフィール設定とフレンド機能(一覧と検索)
- */
+import 'dart:ffi';
 
 import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
@@ -52,57 +48,54 @@ class _boxAlarm extends State<boxAlarm> {
 
     return Container(
       child: Components.whiteBox(
-        Column(
-          children: [
-            Row(
-              mainAxisSize: MainAxisSize.max,
-              mainAxisAlignment: MainAxisAlignment.spaceAround,
-              children: [
-                Text("うごく？"),
-                //設定時刻表示
-                // CustomText(
-                //   text: '${call_hour_data}:${call_min_data}', //文字列の結合には${}を使えばいいらしい　そうなの～～～！？！？！？
-                //   fontSize: 60,
-                //   Color: Constant.black,
-                // ),
+        Column(children: [
+          Row(
+            mainAxisSize: MainAxisSize.max,
+            mainAxisAlignment: MainAxisAlignment.spaceAround,
+            children: [
+              Text("うごく？"),
+              //設定時刻表示
+              // CustomText(
+              //   text: '${call_hour_data}:${call_min_data}', //文字列の結合には${}を使えばいいらしい　そうなの～～～！？！？！？
+              //   fontSize: 60,
+              //   Color: Constant.black,
+              // ),
 
-                //スイッチ
-                CupertinoSwitch(
-                    activeColor: Constant.accent_color,
-                    value: _bool,
-                    onChanged: (value) {
-                      setState(() {
-                        _bool = value;
-                        //timerData["timers"].add("ひどい");
-                      });
-                    }),
-              ],
-            ),
-            
-            Row(
-              mainAxisAlignment: MainAxisAlignment.end, //右寄せ
-              children: [
-                //歯車アイコン
-                IconButton(
-                  icon: const Icon(
-                    Icons.settings,
-                    color: Constant.black,
-                    size: 40,
-                  ),
-                  onPressed: () {
-                    //別ページ遷移
-                    //ページ遷移
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                          builder: (context) => const PageSetAlarm_2()),
-                    );
-                  },
-                )
-              ],
-            )
-          ]   
-        ),
+              //スイッチ
+              CupertinoSwitch(
+                  activeColor: Constant.accent_color,
+                  value: _bool,
+                  onChanged: (value) {
+                    setState(() {
+                      _bool = value;
+                      //timerData["timers"].add("ひどい");
+                    });
+                  }),
+            ],
+          ),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.end, //右寄せ
+            children: [
+              //歯車アイコン
+              IconButton(
+                icon: const Icon(
+                  Icons.settings,
+                  color: Constant.black,
+                  size: 40,
+                ),
+                onPressed: () {
+                  //別ページ遷移
+                  //ページ遷移
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                        builder: (context) => const PageSetAlarm_2()),
+                  );
+                },
+              )
+            ],
+          )
+        ]),
         _screenSizeWidth,
         bordercolor: Constant.main,
       ),
@@ -111,13 +104,23 @@ class _boxAlarm extends State<boxAlarm> {
 }
 
 //ボタン表示
+//動的な動作を実装するためのなんかあれ
 class MyStatefulWidget extends StatefulWidget {
   @override
-  _MyStatefulWidgetState createState() => _MyStatefulWidgetState();
+  State<MyStatefulWidget> createState() => _MyStatefulWidgetState();
 }
 
 class _MyStatefulWidgetState extends State<MyStatefulWidget> {
   bool isButtonPressed = false;
+  static String word = '';
+
+  
+  @override
+  Widget build(BuildContext context) {
+    //メソッドをインスタンスから呼び出す
+    return _BottunState("音", widget);
+    
+  }
 
   Widget _BottunState(String word, Widget widget,
       {Color color = Constant.grey, Color subcolor = Constant.sub_color}) {
@@ -132,26 +135,24 @@ class _MyStatefulWidgetState extends State<MyStatefulWidget> {
 
         //ボタンを押したときの動作
         onPressed: () {
+          widget;
           setState(() {
             isButtonPressed = !isButtonPressed;
           });
         },
 
         //中に入る文字
-        child: CustomText(
-          text: word,
-          fontSize: 40,
-          Color: Constant.black,
-        ),
+        child: Text(word),
+        // child: CustomText(
+        //   text: word,
+        //   fontSize: 40,
+        //   Color: Constant.black,
+        // ),
       ),
     );
   }
 
-  @override
-  Widget build(BuildContext context) {
-    // ボタンを表示する部分で_BottunStateを呼び出す
-    return _BottunState('水', widget);
-  }
+  
 }
 
 class PageSetAlarm extends StatefulWidget {
@@ -210,6 +211,13 @@ class PageSetAlarm_2 extends StatefulWidget {
 }
 
 class _PageSetAlarmState_2 extends State<PageSetAlarm_2> {
+  //ボタン管理用の変数
+  static const bool voice = false;
+  static const bool water = false;
+  static const bool shine = false;
+  static const bool panch = false;
+  static const bool vib = false;
+
   @override
   Widget build(BuildContext context) {
     var _screenSizeWidth = MediaQuery.of(context).size.width; // 画面の大きさを保存しておく
@@ -267,8 +275,8 @@ class _PageSetAlarmState_2 extends State<PageSetAlarm_2> {
                   Row(children: [
                     Text('時刻設定'),
                     // const CustomText(
-                    //   text: '時刻設定', 
-                    //   fontSize: 20, 
+                    //   text: '時刻設定',
+                    //   fontSize: 20,
                     //   Color: Constant.black
                     //   ),
                     // //時刻表示
@@ -291,18 +299,15 @@ class _PageSetAlarmState_2 extends State<PageSetAlarm_2> {
 
               //箱2
               Components.whiteBox(
-                const Column(
-                  children:[
-                    Row(
-                      mainAxisSize: MainAxisSize.max,
-                      mainAxisAlignment: MainAxisAlignment.spaceAround,
-                      children: [
-                        //MyStatefulWidget(),
-                      ],
-                    )
-                    
-                  ]
-                ),
+                Column(children: [
+                  Row(
+                    mainAxisSize: MainAxisSize.max,
+                    mainAxisAlignment: MainAxisAlignment.spaceAround,
+                    children: [
+                      MyStatefulWidget(),
+                    ],
+                  )
+                ]),
                 _screenSizeWidth,
                 bordercolor: Constant.main,
               ),
@@ -320,6 +325,11 @@ class _PageSetAlarmState_2 extends State<PageSetAlarm_2> {
                   ),
                   onPressed: () {},
                   child: Text('保存'),
+                  //const CustomText(
+                  //   text: '保存',
+                  //   fontSize: 18,
+                  //   Color: Constant.black,
+                  // )
                 ),
               ),
 
