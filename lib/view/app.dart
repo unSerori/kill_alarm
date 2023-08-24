@@ -33,17 +33,23 @@ class MyApp extends StatelessWidget {
 class Components {  // こんぽーねんと？
 
   // widgetはColumnやRowを想定してるよ。
-  static Widget whiteBox(Widget widget, double _screenSizeWidth, {double widthRatio=0.8, double widthRatsio=0.8, double paddingHor=10, double paddingVer=25, }){
+  static Widget whiteBox(Widget widget, double _screenSizeWidth, {double widthRatio=0.8, double widthRatsio=0.8, double paddingHor=10, double paddingVer=25, Color bordercolor = Colors.white}){
     return Container(
+      
       width: _screenSizeWidth * widthRatio,
       padding: EdgeInsets.symmetric(horizontal: paddingHor, vertical: paddingVer),
       decoration: BoxDecoration(
+        border: Border.all(
+          color: bordercolor,
+          width: 5,
+          ),
+        
         color: Colors.white,
-        borderRadius: BorderRadius.circular(10),
+        borderRadius: BorderRadius.circular(20),
         boxShadow: const [
           BoxShadow(
             color: Colors.grey, //色
-            spreadRadius: 1, 
+            //spreadRadius: 1, 
             blurRadius: 1, 
             offset: Offset(0, 2),
           ),
@@ -52,9 +58,6 @@ class Components {  // こんぽーねんと？
       child: widget, // BOXの中に配置するWidget
     );
   }
-
-
-
 
   static final square = Container(  // 白いぼっくす
     width: 200,
