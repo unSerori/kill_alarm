@@ -85,13 +85,13 @@ class _FriendSearchPageState extends State<FriendSearchPage> {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       const SizedBox(
-                        height: 13,
+                        height: 18,
                       ),
                       CustomText(
                           text: _nameList[index],
                           fontSize: 16,
                           Color: Constant.black),
-                      const SizedBox(height: 3),
+                      const SizedBox(height: 7),
                       CustomText(
                           text: _userList[index],
                           fontSize: 13,
