@@ -130,7 +130,7 @@ class _PageProfileState extends State<PageProfile> {
                             backgroundColor: Constant.white,
                             title: const CustomText(
                                 text: "本当に削除しますか？",
-                                fontSize: 20,
+                                fontSize: 18,
                                 Color: Constant.black),
                             actions: <Widget>[
                               Row(
@@ -148,7 +148,7 @@ class _PageProfileState extends State<PageProfile> {
                                     onPressed: () {},
                                     child: const CustomText(
                                         text: 'はい',
-                                        fontSize: 18,
+                                        fontSize: 16,
                                         Color: Constant.white),
                                   ),
                                   const SizedBox(
@@ -156,7 +156,7 @@ class _PageProfileState extends State<PageProfile> {
                                   ),
                                   ElevatedButton(
                                     style: ElevatedButton.styleFrom(
-                                      backgroundColor: Constant.light_grey,
+                                      backgroundColor: Constant.sub_color,
                                       shape: RoundedRectangleBorder(
                                           borderRadius:
                                               BorderRadius.circular(10)),
@@ -167,8 +167,8 @@ class _PageProfileState extends State<PageProfile> {
                                     },
                                     child: const CustomText(
                                         text: 'いいえ',
-                                        fontSize: 18,
-                                        Color: Constant.white),
+                                        fontSize: 16,
+                                        Color: Constant.accent_color),
                                   ),
                                 ],
                               ),
@@ -178,7 +178,7 @@ class _PageProfileState extends State<PageProfile> {
                       );
                     },
                     style: ElevatedButton.styleFrom(
-                      backgroundColor: Constant.light_grey,
+                      backgroundColor: Constant.accent_color,
                       shape: RoundedRectangleBorder(
                           borderRadius: BorderRadius.circular(10)),
                       elevation: 3,
@@ -235,7 +235,7 @@ class _PageProfileState extends State<PageProfile> {
                       //TODO: キャンセルボタン押した時の処理
                     },
                     style: ElevatedButton.styleFrom(
-                      backgroundColor: Constant.light_grey,
+                      backgroundColor: Constant.accent_color,
                       shape: RoundedRectangleBorder(
                           borderRadius: BorderRadius.circular(10)),
                       elevation: 3,
@@ -298,7 +298,7 @@ class _PageProfileState extends State<PageProfile> {
                       elevation: 3,
                     ),
                     child: const CustomText(
-                        text: '承認', fontSize: 13, Color: Constant.white),
+                        text: '承認', fontSize: 12, Color: Constant.white),
                   ),
                   const SizedBox(
                     width: 5,
@@ -312,7 +312,7 @@ class _PageProfileState extends State<PageProfile> {
                             backgroundColor: Constant.white,
                             title: const CustomText(
                                 text: "このユーザーを拒否しますか？",
-                                fontSize: 20,
+                                fontSize: 18,
                                 Color: Constant.black),
                             actions: <Widget>[
                               Row(
@@ -330,7 +330,7 @@ class _PageProfileState extends State<PageProfile> {
                                     onPressed: () {},
                                     child: const CustomText(
                                         text: 'はい',
-                                        fontSize: 18,
+                                        fontSize: 16,
                                         Color: Constant.white),
                                   ),
                                   const SizedBox(
@@ -338,7 +338,7 @@ class _PageProfileState extends State<PageProfile> {
                                   ),
                                   ElevatedButton(
                                     style: ElevatedButton.styleFrom(
-                                      backgroundColor: Constant.light_grey,
+                                      backgroundColor: Constant.sub_color,
                                       shape: RoundedRectangleBorder(
                                           borderRadius:
                                               BorderRadius.circular(10)),
@@ -349,8 +349,8 @@ class _PageProfileState extends State<PageProfile> {
                                     },
                                     child: const CustomText(
                                         text: 'いいえ',
-                                        fontSize: 18,
-                                        Color: Constant.white),
+                                        fontSize: 16,
+                                        Color: Constant.accent_color),
                                   ),
                                 ],
                               ),
@@ -360,13 +360,13 @@ class _PageProfileState extends State<PageProfile> {
                       );
                     },
                     style: ElevatedButton.styleFrom(
-                      backgroundColor: Constant.light_grey,
+                      backgroundColor: Constant.white,
                       shape: RoundedRectangleBorder(
                           borderRadius: BorderRadius.circular(10)),
                       elevation: 3,
                     ),
                     child: const CustomText(
-                        text: '拒否', fontSize: 13, Color: Constant.white),
+                        text: '拒否', fontSize: 12, Color: Constant.accent_color),
                   ),
                 ],
               ),

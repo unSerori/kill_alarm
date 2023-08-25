@@ -9,6 +9,7 @@ import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:kill_alarm/view/constant.dart';
 import 'package:kill_alarm/view/pages/components/custom_text.dart';
+
 // こんぽーねんと？
 
 class PageAttack extends StatefulWidget {
@@ -55,65 +56,73 @@ class _PageAttackState extends State<PageAttack> {
           SizedBox(height: 35),
           Container(
             alignment: Alignment.center,
-            child: ElevatedButton(
-              style: ElevatedButton.styleFrom(
-                shape: RoundedRectangleBorder(
+            child: Container(
+              decoration: BoxDecoration(
+                color: Constant.white,
+                  boxShadow: [
+                    BoxShadow(
+                      color: Colors.grey, //色
+                      spreadRadius: 0, //影の大きさ
+                      blurRadius: 4.0, //影の不透明度
+                      offset: Offset(0, 4), //x軸とy軸のずらし具合
+                    ),
+                  ],
                   borderRadius: BorderRadius.circular(20),
+                  border: Border.all(width: 4.0, color: Constant.main)),
+              width: _screenSizeWidth * 0.83,
+              height: 60,
+              child: DropdownButtonFormField2<String>(
+                //isExpanded: true,
+                decoration: InputDecoration(
+                  // 下線消す
+                  enabledBorder: InputBorder.none,
+                  focusedBorder: InputBorder.none,
+                  contentPadding: const EdgeInsets.symmetric(vertical: 16),
                 ),
-                side: const BorderSide(
-                  color: Constant.main, //枠線の色
-                  width: 4, //太さ
-                ),
-                backgroundColor: Constant.white,
-                elevation: 8,
-              ),
-              onPressed: () async {},
-              child: Container(
-                width: _screenSizeWidth * 0.75,
-                height: 60,
-                child: DropdownButtonFormField2<String>(
-                  isExpanded: true,
-                  decoration: InputDecoration(
-                    contentPadding: const EdgeInsets.symmetric(vertical: 16),
-                  ),
-                  hint: const CustomText(
+                hint: Padding(
+                  padding: const EdgeInsets.only(left: 28),
+                  child: const CustomText(
                       text: '起こす相手を選んでね', fontSize: 15, Color: Constant.black),
-                  items: _fNameList
-                      .map((item) => DropdownMenuItem<String>(
-                            value: item,
+                ),
+                items: _fNameList
+                    .map((item) => DropdownMenuItem<String>(
+                          value: item,
+                          child: Padding(
+                            padding: const EdgeInsets.only(left: 28),
                             child: CustomText(
-                                text: item,
-                                fontSize: 15,
-                                Color: Constant.black),
-                          ))
-                      .toList(),
-                  onChanged: (value) {
-                    //Do something when selected item is changed.
-                  },
-                  onSaved: (value) {
-                    selectedValue = value.toString();
-                  },
-                  buttonStyleData: const ButtonStyleData(
-                    padding: EdgeInsets.only(right: 8),
+                                text: item, fontSize: 15, Color: Constant.black),
+                          ),
+                        ))
+                    .toList(),
+                onChanged: (value) {
+                  //TODO：選択してるフレンドが変わった時
+                },
+                onSaved: (value) {
+                  //選択しているフレンドの変更、保存
+                  //TODO:ここで保存？
+                  selectedValue = value.toString();
+                },
+                buttonStyleData: const ButtonStyleData(
+                  padding: EdgeInsets.only(right: 20),
+                ),
+                iconStyleData: const IconStyleData(
+                  icon: FaIcon(
+                    FontAwesomeIcons.chevronDown,
+                    size: 15,
+                    color: Constant.black,
                   ),
-                  iconStyleData: const IconStyleData(
-                    icon: FaIcon(
-                      FontAwesomeIcons.chevronDown,
-                      size: 15,
-                      color: Constant.black,
-                    ),
-                    iconSize: 24,
-                  ),
-                  dropdownStyleData: DropdownStyleData(
-                    decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(15),
-                      color: Constant.white,
-                    ),
-                  ),
-                  menuItemStyleData: const MenuItemStyleData(
-                    padding: EdgeInsets.symmetric(horizontal: 16),
+                  iconSize: 24,
+                ),
+                dropdownStyleData: DropdownStyleData(
+                  width: _screenSizeWidth * 0.83,
+                  decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(15),
+                    color: Constant.white,
                   ),
                 ),
+                // menuItemStyleData: const MenuItemStyleData(
+                //   padding: EdgeInsets.symmetric(horizontal: 16),
+                // ),
               ),
             ),
           ),
@@ -121,8 +130,7 @@ class _PageAttackState extends State<PageAttack> {
             height: 20,
           ),
           Container(
-            //height: 500,
-            width: 340,
+            width: _screenSizeWidth * 0.83,
             decoration: BoxDecoration(
               border: Border.all(width: 4, color: Constant.main),
               borderRadius: BorderRadius.circular(20),
@@ -186,13 +194,15 @@ class _PageAttackState extends State<PageAttack> {
               ],
             ),
           ),
-          SizedBox(height: 30,),
+          SizedBox(
+            height: 30,
+          ),
           Container(
             width: 120,
             height: 45,
             child: ElevatedButton(
               style: ElevatedButton.styleFrom(
-                backgroundColor: Constant.main,
+                backgroundColor: Constant.accent_color,
                 shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(30)),
                 elevation: 3,
@@ -200,7 +210,8 @@ class _PageAttackState extends State<PageAttack> {
               onPressed: () {
                 //TODO：そうしーんっボタン押した時の処理
               },
-              child: CustomText(text: '送信', fontSize: 16, Color: Constant.black),
+              child:
+                  CustomText(text: '送信', fontSize: 18, Color: Constant.white),
             ),
           ),
         ],
