@@ -30,17 +30,20 @@ class _PageProfileState extends State<PageProfile> {
   //名前
   final List<String> _fNameList = [
     "せろり",
+    "大橋",
     "K.Murakami",
     "田島",
   ];
   //ユーザーネーム
   final List<String> _fUserNameList = [
     "un_serori",
+    "rate980",
     "ecc_teacher",
     "9.pi",
   ];
   //image
   final List<String> _fImageList = [
+    'assets/profile_image.png',
     'assets/profile_image.png',
     'assets/profile_image.png',
     'assets/profile_image.png',
@@ -101,14 +104,14 @@ class _PageProfileState extends State<PageProfile> {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       const SizedBox(
-                        height: 13,
+                        height: 15,
                       ),
                       // 名前
                       CustomText(
                           text: _fNameList[index],
                           fontSize: 16,
                           Color: Constant.black),
-                      const SizedBox(height: 3),
+                      const SizedBox(height: 5),
                       // ユーザーネーム
                       CustomText(
                           text: _fUserNameList[index],
@@ -213,13 +216,13 @@ class _PageProfileState extends State<PageProfile> {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       const SizedBox(
-                        height: 13,
+                        height: 15,
                       ),
                       CustomText(
                           text: _awaitNameList[index],
                           fontSize: 16,
                           Color: Constant.black),
-                      const SizedBox(height: 3),
+                      const SizedBox(height: 5),
                       CustomText(
                           text: _awaitUserNameList[index],
                           fontSize: 13,
@@ -270,13 +273,13 @@ class _PageProfileState extends State<PageProfile> {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       const SizedBox(
-                        height: 13,
+                        height: 15,
                       ),
                       CustomText(
                           text: _reqNameList[index],
                           fontSize: 16,
                           Color: Constant.black),
-                      const SizedBox(height: 3),
+                      const SizedBox(height: 5),
                       CustomText(
                           text: _reqUserNameList[index],
                           fontSize: 13,
@@ -471,18 +474,16 @@ class _PageProfileState extends State<PageProfile> {
                                     tabs: myTabs,
                                   ),
                                 ),
-                                Scrollbar(
-                                  child: SizedBox(
-                                    child: TabBarView(
-                                      children: [
-                                        _friendListView(),
-                                        _awaitApprovalListView(),
-                                        _requestListView()
-                                      ],
-                                    ),
-                                    height: 310,
-                                    width: 320,
+                                SizedBox(
+                                  child: TabBarView(
+                                    children: [
+                                      Scrollbar(child: _friendListView()),
+                                      Scrollbar(child: _awaitApprovalListView()),
+                                      Scrollbar(child: _requestListView())
+                                    ],
                                   ),
+                                  height: 310,
+                                  width: 320,
                                 ),
                               ],
                             )),
