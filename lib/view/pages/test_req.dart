@@ -19,12 +19,14 @@ class PageServerReq extends StatelessWidget {
   // httpTokens
   static String refToken = "";  // 
   static String accessToken = "";  // 
+  static Map<String, dynamic> timerData = {};
   // ws
   static String requestid = "";
+  static bool wsTokenAuth = false;
   // ログイン前提の処理で使う。
   static bool isAuthed = false;  
   // URLとかポートとかプロトコルとか
-  static const String serverIP = "10.200.0.163";  // "127.0.0.1""10.200.0.82""tidalhip.local""10.200.0.115"10.25.10.107
+  static const String serverIP = "127.0.0.1";  // "127.0.0.1""10.200.0.82""tidalhip.local""10.200.0.115"10.25.10.10710.200.0.163
   static const String server_port = "8000";
   static const String protocol = "http";
   baseUrl() {  // 鯖のURLを設定
@@ -42,8 +44,8 @@ class PageServerReq extends StatelessWidget {
 
 
   // ボタンを押したときの処理
-  // ろぐいんぼたん  // POST, body username password を使ってログインする。
-  buttonLogin()async{
+  // ろぐいんぼたん  // POST, body username password を使ってログインする。 ついでにWSトークンを取り鯖から設定データをもらう。
+  login()async{
     debugPrint(controllerUserName.text); // debug
     debugPrint(controllerPassword.text); // debug
     debugPrint("ぼたんおしちゃったの？！"); // debug
@@ -63,15 +65,22 @@ class PageServerReq extends StatelessWidget {
       debugPrint("02accessToken[1]: " + accessToken); // debug
       isAuthed = true;
       final Map<String, dynamic> decodedToken = Jwt.parseJwt(accessToken);
+      WsToken();
+      getTimer();
+      // if(!WsToken()) {  // ログインが成功したらWSTokenもとってくる。
+      //   debugPrint("WSTokenとれなかったぜ；；");
+      // }
+      // if(!getTimer()){  // 失敗したらreturn
+      //   debugPrint("ログイン時のデータ取得できなかったぜ；；");
+      // }
     } else{
       debugPrint("しんじゃった。" + logToken[1]);
       isAuthed = false;
-
     }
   }
   
   // ろぐあうと  // POST, header refToken を使ってろぐあうとする。
-  buttonLogout()async{
+  logout()async{
     if (!isAuthed) {
       debugPrint("認証しろあほ");
       return;
@@ -98,7 +107,7 @@ class PageServerReq extends StatelessWidget {
   }
 
   // さいんあっぷ  // POST, body username password を使ってユーザー情報を設定しサインアップする。
-  buttonSignup()async{
+  signup()async{
     debugPrint(controllerUserName.text);
     debugPrint(controllerPassword.text);
     debugPrint("ぼたんおしちゃったの？！");
@@ -123,8 +132,41 @@ class PageServerReq extends StatelessWidget {
     }
   }
 
+  // ログイン時に鯖にデータを問い合わせる。
+  // getTimer()async{
+  //   debugPrint("ぼたんおしちゃったの？！"); // debug
+  //   var body = {
+  //     "" : "",
+  //   };
+  //   List logToken = await sendReq(baseUrl() + "/get_timer", "GET", accessToken, body);  // 
+
+  //   if (logToken[0]) {
+  //     debugPrint("01logToken[1]: " + logToken[1]);
+  //     Map<String, dynamic> jsonDecodeData = json.decode(logToken[1]);
+
+  //     refToken = jsonDecodeData["refresh_token"].toString();
+  //     accessToken = jsonDecodeData["access_token"].toString();
+  //     debugPrint("02logToken[1]: " + refToken); // debug
+  //     debugPrint("02accessToken[1]: " + accessToken); // debug
+  //     isAuthed = true;
+  //     //final Map<String, dynamic> decodedToken = Jwt.parseJwt(accessToken);
+      
+  //     debugPrint("timerData");
+  //     timerData = logToken[1];
+  //     debugPrint(timerData.toString());
+  //   } else{
+  //     debugPrint("しんじゃった。" + logToken[1]);
+  //     isAuthed = false;
+  //   }
+  // }
+
+  // 設定時に鯖にデータをぶち込む
+  updateTimer()async{
+    
+  }
+
   // ぷろふぃーる  // GET, header accessToken を使ってプロフィール(useridとusername)を取得する。
-  buttonGetProfile()async{
+  getProfile()async{
     if (!isAuthed) {
       debugPrint("認証しろあほ");
       return;
@@ -155,7 +197,7 @@ class PageServerReq extends StatelessWidget {
   }
 
   // 友達爆弾  // POST, header accessToken と body friendid payloads を使って友達爆弾をセットする。
-  buttonWakep()async{
+  wakeup()async{
     if (!isAuthed) {
       debugPrint("認証しろあほ");
       return;
@@ -189,7 +231,7 @@ class PageServerReq extends StatelessWidget {
   }
 
   // IoTとの接続  // POST, header accessToken と body deviceid を使ってIoTと接続する。
-  buttonPairIoT()async{
+  pairIoT()async{
     if (!isAuthed) {
       debugPrint("認証しろあほ");
       return;
@@ -222,7 +264,7 @@ class PageServerReq extends StatelessWidget {
   }
 
   // IoTとの接続解除  // POST, header accessToken を使ってIoTとの接続を解除。
-  buttonUnPairIoT()async{
+  unPairIoT()async{
     if (!isAuthed) {
       debugPrint("認証しろあほ");
       return;
@@ -253,7 +295,7 @@ class PageServerReq extends StatelessWidget {
   }
 
   // れふれっしゅとーくん  // GET, header refToken を使ってaccesstokenを生成しなおす
-  buttonRefreshToken()async{
+  refreshToken()async{
     if (!isAuthed) {
       debugPrint("認証しろあほ");
       return;
@@ -280,7 +322,7 @@ class PageServerReq extends StatelessWidget {
   }
 
   // ユーザー登録削除  // DELETE, header refToken を使ってアカウント情報を削除。
-  buttonDeleteUser()async{
+  deleteUser()async{
     if (!isAuthed) {
       debugPrint("認証しろあほ");
       return;
@@ -307,7 +349,7 @@ class PageServerReq extends StatelessWidget {
   }
 
   // アイコン変更  // POST, header ？ を使ってアイコンを変更。
-  buttonChangeIcon()async{
+  changeIcon()async{
     if (!isAuthed) {
       debugPrint("認証しろあほ");
       return;
@@ -322,7 +364,6 @@ class PageServerReq extends StatelessWidget {
       'Content-Type': 'application/octet-stream', 
       'Authorization': 'Bearer ' + accessToken, 
     };
-/*
     // リクエストurlをUri.parse()でuriにパース パース...URLの文字列を役割ごとに分解すること
     var uri = Uri.parse(baseUrl() + "/change_icon");
 
@@ -367,24 +408,27 @@ class PageServerReq extends StatelessWidget {
       debugPrint("しんじゃった。" + [false, "おうとうないよ；；"][1].toString());
 
     }
- */ 
   }
 
   //Websocketメッセージ
-  ws_message(String message) {
-    debugPrint(message.toString());
+  wsMessage(String message) {
+    debugPrint("ここが鯖から届いためっせーじ: " + message.toString());
     Map<String,dynamic> decode_dict = json.decode(message.toString());
 
-    requestid = decode_dict["requestid"].toString();
-
     switch (decode_dict["msgcode"].toString()) {
-      case "11131":
+      case "11131":  // sent a friend request
+        requestid = decode_dict["requestid"].toString();
+        break;
+      case "11110":  // 認証失敗
+        wsTokenAuth = false;
+      case "11111":  // 認証成功
+        wsTokenAuth = true;
         break;
     }
   }
 
   // wsのトークン取得
-  buttonWsToken()async{
+  WsToken()async{
     if (!isAuthed) {
       debugPrint("認証しろあほ");
       return;
@@ -405,11 +449,10 @@ class PageServerReq extends StatelessWidget {
       String wsToken = jsonDecodeData["token"].toString();
       
       debugPrint("うぇぶそけっとのとーくん[1]: " + wsToken);
-      List<String> test = [""];
+     
       // ws通信で認証をする
       // 受信する
-      
-      try {
+/*       try {
         _channel.sink.close();
       } catch (ex) {
         
@@ -420,17 +463,24 @@ class PageServerReq extends StatelessWidget {
       );
       try {
         _channel.stream.listen((message) {
-          ws_message(message);
+          wsMessage(message);
         });
       } catch (ex) {
       }
+ */   
+      _channel = WebSocketChannel.connect(
+        Uri.parse("ws://" + serverIP + ":" + server_port + "/userws"), 
+      );
+      _channel.stream.listen((message) {
+        wsMessage(message);
+      });
+
       // 送る中身
       var authMsg = {
           "msgtype" : "authToken",
           "token" : wsToken,
       };
 
-      //debugPrint(json.encode(authMsg).toString()); // debug
       // 送る
       _channel.sink.add(json.encode(authMsg));
 
@@ -524,7 +574,7 @@ class PageServerReq extends StatelessWidget {
   }
 
   // フレンド一覧取得
-  get_friends() async {
+  getFriends() async {
     // 送る中身
     var data = {
       "msgtype" : "get_friends",
@@ -534,7 +584,7 @@ class PageServerReq extends StatelessWidget {
   }
 
   // リクエスト承認
-  accept_request() async{
+  acceptRequest() async{
     // friendidを取る
     String friend_userid = await getUserid(controllerFriendID.text);
     if(friend_userid.isEmpty) {
@@ -552,7 +602,7 @@ class PageServerReq extends StatelessWidget {
   }
   
   // リクエスト拒否
-  reject_request()async{
+  rejectRequest()async{
     // friendidを取る
     String friend_userid = await getUserid(controllerFriendID.text);
     if(friend_userid.isEmpty) {
@@ -570,7 +620,7 @@ class PageServerReq extends StatelessWidget {
   }
 
   // キャンセルリクエスト
-  cancel_request()async{
+  cancelRequest()async{
     // friendidを取る
     String friend_userid = await getUserid(controllerFriendID.text);
     if(friend_userid.isEmpty) {
@@ -588,7 +638,7 @@ class PageServerReq extends StatelessWidget {
   }
 
   // フレンド削除
-  remove_friend()async{
+  removeRriend()async{
     // friendidを取る
     String friend_userid = await getUserid(controllerFriendID.text);
     if(friend_userid.isEmpty) {
@@ -606,7 +656,7 @@ class PageServerReq extends StatelessWidget {
   }
 
   // 受信済みフレンド一覧
-  recved_requests()async{
+  recvedRequests()async{
     // 送る中身
     var data = {
       "msgtype" : "recved_requests",
@@ -616,7 +666,7 @@ class PageServerReq extends StatelessWidget {
   }
 
   // 送信済みフレンド一覧
-  sended_requests()async{
+  sendedRequests()async{
     // 送る中身
     var data = {
       "msgtype" : "sended_requests",
@@ -703,7 +753,7 @@ sended_requests
               ),
             ),
             ElevatedButton(
-              onPressed: buttonLogin,
+              onPressed: login,
               style: ElevatedButton.styleFrom(
                 backgroundColor: Colors.blue,
               ),
@@ -712,7 +762,7 @@ sended_requests
             
             // ろぐあうと
             ElevatedButton(
-              onPressed: buttonLogout, 
+              onPressed: logout, 
               style: ElevatedButton.styleFrom(
                 backgroundColor: Colors.blue,
               ),
@@ -721,7 +771,7 @@ sended_requests
 
             // サインあっぷ
             ElevatedButton(
-              onPressed: buttonSignup, 
+              onPressed: signup, 
               style: ElevatedButton.styleFrom(
                 backgroundColor: Colors.blue,
               ),
@@ -730,7 +780,7 @@ sended_requests
 
             // プロファイル
             ElevatedButton(
-              onPressed: buttonGetProfile, 
+              onPressed: getProfile, 
               style: ElevatedButton.styleFrom(
                 backgroundColor: Colors.blue,
               ),
@@ -739,7 +789,7 @@ sended_requests
 
             // 友達爆弾
             ElevatedButton(
-              onPressed: buttonWakep, 
+              onPressed: wakeup, 
               style: ElevatedButton.styleFrom(
                 backgroundColor: Colors.blue,
               ),
@@ -748,7 +798,7 @@ sended_requests
 
             // IoTとの紐づけ
             ElevatedButton(
-              onPressed: buttonPairIoT, 
+              onPressed: pairIoT, 
               style: ElevatedButton.styleFrom(
                 backgroundColor: Colors.blue,
               ),
@@ -757,7 +807,7 @@ sended_requests
 
             // IoTとの紐づけ解除
             ElevatedButton(
-              onPressed: buttonUnPairIoT, 
+              onPressed: unPairIoT, 
               style: ElevatedButton.styleFrom(
                 backgroundColor: Colors.blue,
               ),
@@ -766,7 +816,7 @@ sended_requests
 
             // れふれっしゅとーくん
             ElevatedButton(
-              onPressed: buttonRefreshToken, 
+              onPressed: refreshToken, 
               style: ElevatedButton.styleFrom(
                 backgroundColor: Colors.blue,
               ),
@@ -775,7 +825,7 @@ sended_requests
 
             // ユーザー登録削除
             ElevatedButton(
-              onPressed: buttonDeleteUser, 
+              onPressed: deleteUser, 
               style: ElevatedButton.styleFrom(
                 backgroundColor: Colors.blue,
               ),
@@ -784,7 +834,7 @@ sended_requests
 
             // アイコン変更
             ElevatedButton(
-              onPressed: buttonChangeIcon, 
+              onPressed: changeIcon, 
               style: ElevatedButton.styleFrom(
                 backgroundColor: Colors.blue,
               ),
@@ -794,7 +844,7 @@ sended_requests
             // ws
             // ws_token
             ElevatedButton(
-              onPressed: buttonWsToken, 
+              onPressed: WsToken, 
               style: ElevatedButton.styleFrom(
                 backgroundColor: Colors.blue,
               ),
@@ -824,7 +874,7 @@ sended_requests
 
             // フレンド一覧取得
             ElevatedButton(
-              onPressed: get_friends, //wsFriendReq(controllerFriendID.text),  // 送る先のフレンドIDを指定する
+              onPressed: getFriends, //wsFriendReq(controllerFriendID.text),  // 送る先のフレンドIDを指定する
               style: ElevatedButton.styleFrom(
                 backgroundColor: Colors.blue,
               ),
@@ -833,7 +883,7 @@ sended_requests
 
             // リクエスト承認
             ElevatedButton(
-              onPressed: accept_request, //wsFriendReq(controllerFriendID.text),  // 送る先のフレンドIDを指定する
+              onPressed: acceptRequest, //wsFriendReq(controllerFriendID.text),  // 送る先のフレンドIDを指定する
               style: ElevatedButton.styleFrom(
                 backgroundColor: Colors.blue,
               ),
@@ -842,7 +892,7 @@ sended_requests
 
             // リクエスト拒否
             ElevatedButton(
-              onPressed: reject_request, //wsFriendReq(controllerFriendID.text),  // 送る先のフレンドIDを指定する
+              onPressed: rejectRequest, //wsFriendReq(controllerFriendID.text),  // 送る先のフレンドIDを指定する
               style: ElevatedButton.styleFrom(
                 backgroundColor: Colors.blue,
               ),
@@ -851,7 +901,7 @@ sended_requests
 
             // キャンセルリクエスト
             ElevatedButton(
-              onPressed: cancel_request, //wsFriendReq(controllerFriendID.text),  // 送る先のフレンドIDを指定する
+              onPressed: cancelRequest, //wsFriendReq(controllerFriendID.text),  // 送る先のフレンドIDを指定する
               style: ElevatedButton.styleFrom(
                 backgroundColor: Colors.blue,
               ),
@@ -860,7 +910,7 @@ sended_requests
 
             // フレンド削除
             ElevatedButton(
-              onPressed: remove_friend, //wsFriendReq(controllerFriendID.text),  // 送る先のフレンドIDを指定する
+              onPressed: removeRriend, //wsFriendReq(controllerFriendID.text),  // 送る先のフレンドIDを指定する
               style: ElevatedButton.styleFrom(
                 backgroundColor: Colors.blue,
               ),
@@ -869,7 +919,7 @@ sended_requests
 
             // 受信済みフレンド一覧
             ElevatedButton(
-              onPressed: recved_requests, //wsFriendReq(controllerFriendID.text),  // 送る先のフレンドIDを指定する
+              onPressed: recvedRequests, //wsFriendReq(controllerFriendID.text),  // 送る先のフレンドIDを指定する
               style: ElevatedButton.styleFrom(
                 backgroundColor: Colors.blue,
               ),
@@ -878,7 +928,7 @@ sended_requests
 
             // 送信済みフレンド一覧
             ElevatedButton(
-              onPressed: sended_requests, //wsFriendReq(controllerFriendID.text),  // 送る先のフレンドIDを指定する
+              onPressed: sendedRequests, //wsFriendReq(controllerFriendID.text),  // 送る先のフレンドIDを指定する
               style: ElevatedButton.styleFrom(
                 backgroundColor: Colors.blue,
               ),
