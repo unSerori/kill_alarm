@@ -6,13 +6,12 @@
 
 import 'package:flutter/material.dart';
 // ページ遷移先をいんぽーと
+import 'constant.dart';
 import 'pages/page_attack.dart';
 import 'pages/page_profile.dart';
 import 'pages/page_set_alarm.dart';
 import 'pages/test_req.dart';
 // その他必要なファイル
-import 'constant.dart';
-
 
 class MyApp extends StatelessWidget {
   const MyApp({Key? key}) : super(key: key);
@@ -20,7 +19,7 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      debugShowCheckedModeBanner: false,  // でばっぐの表示を消す
+      debugShowCheckedModeBanner: false, // でばっぐの表示を消す
       title: 'おまころ！',
       theme: ThemeData(
         primarySwatch: Colors.blue,
@@ -30,22 +29,30 @@ class MyApp extends StatelessWidget {
   }
 }
 
-
-class Components {  // こんぽーねんと？
+class Components {
+  // こんぽーねんと？
 
   // widgetはColumnやRowを想定してるよ。
-  static Widget whiteBox(Widget widget, double _screenSizeWidth, {double widthRatio=0.8, double widthRatsio=0.8, double paddingHor=10, double paddingVer=25, }){
+  static Widget whiteBox(
+    Widget widget,
+    double _screenSizeWidth, {
+    double widthRatio = 0.8,
+    double widthRatsio = 0.8,
+    double paddingHor = 10,
+    double paddingVer = 25,
+  }) {
     return Container(
       width: _screenSizeWidth * widthRatio,
-      padding: EdgeInsets.symmetric(horizontal: paddingHor, vertical: paddingVer),
+      padding:
+          EdgeInsets.symmetric(horizontal: paddingHor, vertical: paddingVer),
       decoration: BoxDecoration(
         color: Colors.white,
         borderRadius: BorderRadius.circular(10),
         boxShadow: const [
           BoxShadow(
             color: Colors.grey, //色
-            spreadRadius: 1, 
-            blurRadius: 1, 
+            spreadRadius: 1,
+            blurRadius: 1,
             offset: Offset(0, 2),
           ),
         ],
@@ -54,8 +61,8 @@ class Components {  // こんぽーねんと？
     );
   }
 
-
   static final square = Container(  // 白いぼっくす
+
     width: 200,
     height: 200,
     decoration: BoxDecoration(
@@ -65,14 +72,13 @@ class Components {  // こんぽーねんと？
   );
 }
 
-
-class MyStatefulWidget extends StatefulWidget {  // アプリケーションの動的なUIの作成と更新？
+class MyStatefulWidget extends StatefulWidget {
+  // アプリケーションの動的なUIの作成と更新？
   const MyStatefulWidget({Key? key}) : super(key: key);
 
   @override
   State<MyStatefulWidget> createState() => _MyStatefulWidgetState();
 }
-
 
 class _MyStatefulWidgetState extends State<MyStatefulWidget> {
   // ページをリストに入れる。
@@ -88,7 +94,8 @@ class _MyStatefulWidgetState extends State<MyStatefulWidget> {
 
   // ナビバーの項目が変更されたらindexを更新
   void _onItemTapped(int index) {
-    setState(() {  // lambda式  // setStateで状態を更新
+    setState(() {
+      // lambda式  // setStateで状態を更新
       _selectedIndex = index;
     });
   }
@@ -96,26 +103,93 @@ class _MyStatefulWidgetState extends State<MyStatefulWidget> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(  // AppBar
+        appBar: AppBar(
+          // AppBar
+          backgroundColor: Constant.main,
+          toolbarHeight: 90,
+          centerTitle: true,
+          title: Image.asset('assets/logo_yoko.png', height: 18),
+          //backgroundColor: Colors.blue,
+        ),
+        body: _screens[_selectedIndex], // ページを入力されたインデックスで指定
+
+        bottomNavigationBar: NavigationBar(
+        onDestinationSelected: (int index) {
+          setState(() {
+            _selectedIndex = index;
+          });
+        },
+        selectedIndex: _selectedIndex, // 現在のインデックスから項目を指定？
+        animationDuration: const Duration(seconds: 1),
+        elevation: 6,
+        height: 90,
         backgroundColor: Constant.main,
-        //backgroundColor: Colors.blue,
+        indicatorColor: const Color.fromARGB(121, 251, 255, 253),
+        labelBehavior: NavigationDestinationLabelBehavior.alwaysShow,
+        destinations: const <Widget>[
+          NavigationDestination(
+              icon: ImageIcon(
+                    AssetImage('assets/icons/bomb_icon.png'),
+                    color: Constant.black,
+                  ),
+                  label: 'attack',
+                  
+          ),
+          NavigationDestination(icon: ImageIcon(
+                    AssetImage('assets/icons/alarm_icon.png'),
+                    color: Constant.black,
+                  ),
+                  label: 'alarm'),
+          NavigationDestination(
+              icon: ImageIcon(
+                    AssetImage('assets/icons/user_icon.png'),
+                    color: Constant.black,
+                    size: 22,
+                  ),
+                  label: 'profile'),
+        ],
       ),
 
-      body: _screens[_selectedIndex],  // ページを入力されたインデックスで指定
-      
-      bottomNavigationBar: BottomNavigationBar(  // ナビバー
-        currentIndex: _selectedIndex,  // 現在のインデックスから項目を指定？
-        onTap: _onItemTapped,  // タップされたときに関数を呼び出し、画面を更新
-        backgroundColor: const Color(0xFFAEEEEA),  // ナビバーの背景色
-        items: const <BottomNavigationBarItem>[  // ナビバーの項目を並べる
-          BottomNavigationBarItem(icon: Icon(Icons.home), label: 'フレンド'),  // ここでIcons.hogeはflutter環境に用意されているアイコン  // labelはアイコンの下に表示
-          BottomNavigationBarItem(icon: Icon(Icons.favorite), label: 'アラーム設定'),
-          BottomNavigationBarItem(icon: Icon(Icons.person), label: 'アカウント'),
-          BottomNavigationBarItem(icon: Icon(Icons.verified), label: 'てすとぺーじ'),
-        ],
-        type: BottomNavigationBarType.fixed,  // アイテムを均等に配置
-      )
-    );
+
+        // NavBar のデザイン変更しました
+        // bottomNavigationBar: Container(
+        //   height: 90,
+        //   child: BottomNavigationBar(
+        //     // ナビバー
+        //     currentIndex: _selectedIndex, // 現在のインデックスから項目を指定？
+        //     selectedFontSize: 0,
+        //     onTap: _onItemTapped, // タップされたときに関数を呼び出し、画面を更新
+        //     backgroundColor: Constant.main, // ナビバーの背景色
+        //     items: const <BottomNavigationBarItem>[
+        //       // ナビバーの項目を並べる
+              // BottomNavigationBarItem(
+              //     icon: ImageIcon(
+              //       AssetImage('assets/icons/bomb_icon.png'),
+              //       color: Constant.white,
+              //       size: 35,
+              //     ),
+              //     label:
+              //         'attack'), // ここでIcons.hogeはflutter環境に用意されているアイコン  // labelはアイコンの下に表示
+              // BottomNavigationBarItem(
+              //     icon: ImageIcon(
+              //       AssetImage('assets/icons/alarm_icon.png'),
+              //       color: Constant.white,
+              //       size: 35,
+              //     ),
+              //     label: 'alarm'),
+              // BottomNavigationBarItem(
+              //     tooltip: null,
+              //     icon: ImageIcon(
+              //       AssetImage('assets/icons/user_icon.png'),
+              //       color: Constant.white,
+              //       size: 30,
+                  // ),
+                  // label: 'profile'),
+        //     ],
+        //     type: BottomNavigationBarType.fixed, // アイテムを均等に配置
+        //   ),
+        // )
+        );
   }
 }
 // github通知テスト 
