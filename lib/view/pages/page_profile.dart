@@ -21,7 +21,7 @@ class _PageProfileState extends State<PageProfile> {
     Tab(child: CustomText(text: 'リクエスト', fontSize: 14, Color: Constant.black)),
   ];
 
-  // 自分のプロフィール
+  // 自分のプロフィール {"userid":"806db0f9bebf62d3b713b350b16e4d1fc3d6568795fbe8c5c8ff04effe4e9452","username":"test1","display_name":"test1"}
   String name = "やづ";
   String username = ".yadu_82";
   String image = "assets/profile_image.png";
@@ -286,7 +286,7 @@ class _PageProfileState extends State<PageProfile> {
                   const Expanded(child: SizedBox()),
                   ElevatedButton(
                     onPressed: () {
-                      //TODO: フレンド承認した時の処理
+                      // TODO: フレンド承認した時の処理
                     },
                     style: ElevatedButton.styleFrom(
                       backgroundColor: Constant.accent_color,
