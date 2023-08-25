@@ -85,7 +85,7 @@ class _MyStatefulWidgetState extends State<MyStatefulWidget> {
   static final _screens = [
     const PageAttack(),
     const PageSetAlarm(),
-    const PageProfile(),
+    //const PageProfile(),
     PageServerReq(),
   ];
 
@@ -140,7 +140,14 @@ class _MyStatefulWidgetState extends State<MyStatefulWidget> {
                     color: Constant.black,
                   ),
                   label: 'alarm'),
-          NavigationDestination(
+          //  NavigationDestination(
+          //     icon: ImageIcon(
+          //           AssetImage('assets/icons/user_icon.png'),
+          //           color: Constant.black,
+          //           size: 22,
+          //         ),
+          //         label: 'profile'),
+           NavigationDestination(
               icon: ImageIcon(
                     AssetImage('assets/icons/user_icon.png'),
                     color: Constant.black,
