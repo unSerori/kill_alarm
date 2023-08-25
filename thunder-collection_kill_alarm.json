@@ -1,0 +1,258 @@
+{
+    "client": "Thunder Client",
+    "collectionName": "kill_alarm",
+    "dateExported": "2023-08-20T06:59:26.645Z",
+    "version": "1.1",
+    "folders": [],
+    "requests": [
+        {
+            "_id": "03c57b17-7e29-4034-bcc1-9d1f26fec030",
+            "colId": "687f0445-48d5-4fcf-8db8-216463658a7d",
+            "containerId": "",
+            "name": "pair_iot",
+            "url": "http://127.0.0.1:8000/pair_iot",
+            "method": "POST",
+            "sortNum": 10000,
+            "created": "2023-08-20T06:58:21.629Z",
+            "modified": "2023-08-20T06:58:21.629Z",
+            "headers": [
+                {
+                    "name": "Authorization",
+                    "value": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWJqZWN0Ijp7InVzZXJpZCI6ImY2YzFiNjkwYzgxZDNiMzY1ZGNhNDVlZWJhZDBjNmNiZjM3Njg1OTQyN2YyYWU0YTYxZDE0ZjU2YWI0ZDI0NjQiLCJ0b2tlbmlkIjoiZDIwYTI5NDYtODgyMy00MWY0LTgwMmUtN2I1ZGQwODhlMjk4In0sInR5cGUiOiJhY2Nlc3MiLCJleHAiOjE2OTI0NTk2OTEsImlhdCI6MTY5MjQ1NjA5MSwianRpIjoiZDZmY2VlM2UtNzVmMy00ZjA1LWI2NjItYTE5MDYwNWMxODEyIn0.y_UrMyJ1XGVOEAo3y-pH-JevfOuufZJ1AliCGr-6lyk"
+                }
+            ],
+            "params": [],
+            "body": {
+                "type": "json",
+                "raw": "{\n  \"deviceid\":\"29f4c1d54cdcefff1caec92b4e0c37693a395158a74bea2f3622ad6cb1e38cc520ef34471dd3458d1e4bfc6db1ba33e515fb5f01c6f7e83fb1913c805a25af03\"\n}",
+                "form": []
+            },
+            "tests": []
+        },
+        {
+            "_id": "952d9482-0259-408c-bb7e-43264bfe8842",
+            "colId": "687f0445-48d5-4fcf-8db8-216463658a7d",
+            "containerId": "",
+            "name": "pair_iot",
+            "url": "http://127.0.0.1:8000/pair_iot",
+            "method": "POST",
+            "sortNum": 20000,
+            "created": "2023-08-20T06:58:38.026Z",
+            "modified": "2023-08-20T06:58:38.026Z",
+            "headers": [
+                {
+                    "name": "Authorization",
+                    "value": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWJqZWN0Ijp7InVzZXJpZCI6ImY2YzFiNjkwYzgxZDNiMzY1ZGNhNDVlZWJhZDBjNmNiZjM3Njg1OTQyN2YyYWU0YTYxZDE0ZjU2YWI0ZDI0NjQiLCJ0b2tlbmlkIjoiZDIwYTI5NDYtODgyMy00MWY0LTgwMmUtN2I1ZGQwODhlMjk4In0sInR5cGUiOiJhY2Nlc3MiLCJleHAiOjE2OTI0NTk2OTEsImlhdCI6MTY5MjQ1NjA5MSwianRpIjoiZDZmY2VlM2UtNzVmMy00ZjA1LWI2NjItYTE5MDYwNWMxODEyIn0.y_UrMyJ1XGVOEAo3y-pH-JevfOuufZJ1AliCGr-6lyk"
+                }
+            ],
+            "params": [],
+            "body": {
+                "type": "json",
+                "raw": "{\n  \"deviceid\":\"29f4c1d54cdcefff1caec92b4e0c37693a395158a74bea2f3622ad6cb1e38cc520ef34471dd3458d1e4bfc6db1ba33e515fb5f01c6f7e83fb1913c805a25af03\"\n}",
+                "form": []
+            },
+            "tests": []
+        },
+        {
+            "_id": "af7cfe59-75fe-4e92-b6c7-4e4e41969954",
+            "colId": "687f0445-48d5-4fcf-8db8-216463658a7d",
+            "containerId": "",
+            "name": "unpair_iot",
+            "url": "http://127.0.0.1:8000/unpair_iot",
+            "method": "POST",
+            "sortNum": 30000,
+            "created": "2023-08-20T06:58:41.916Z",
+            "modified": "2023-08-20T06:58:41.916Z",
+            "headers": [
+                {
+                    "name": "Authorization",
+                    "value": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWJqZWN0Ijp7InVzZXJpZCI6ImY2YzFiNjkwYzgxZDNiMzY1ZGNhNDVlZWJhZDBjNmNiZjM3Njg1OTQyN2YyYWU0YTYxZDE0ZjU2YWI0ZDI0NjQiLCJ0b2tlbmlkIjoiZDIwYTI5NDYtODgyMy00MWY0LTgwMmUtN2I1ZGQwODhlMjk4In0sInR5cGUiOiJhY2Nlc3MiLCJleHAiOjE2OTI0NTk2OTEsImlhdCI6MTY5MjQ1NjA5MSwianRpIjoiZDZmY2VlM2UtNzVmMy00ZjA1LWI2NjItYTE5MDYwNWMxODEyIn0.y_UrMyJ1XGVOEAo3y-pH-JevfOuufZJ1AliCGr-6lyk"
+                }
+            ],
+            "params": [],
+            "tests": []
+        },
+        {
+            "_id": "93209504-efac-4401-a6f6-63e748df2b43",
+            "colId": "687f0445-48d5-4fcf-8db8-216463658a7d",
+            "containerId": "",
+            "name": "wakeup",
+            "url": "http://127.0.0.1:8000/wakeup",
+            "method": "POST",
+            "sortNum": 40000,
+            "created": "2023-08-20T06:58:45.525Z",
+            "modified": "2023-08-20T06:58:45.525Z",
+            "headers": [
+                {
+                    "name": "Authorization",
+                    "value": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWJqZWN0Ijp7InVzZXJpZCI6IjgxMTA4NjZjNWE3ZWQ1YTdhODI2NzRmMjQ1OWE3ODY1OTUzOTZjMzJmYzgzODgzMTAwMTE0MGM5NGNhM2I4MGUiLCJ0b2tlbmlkIjoiMTJlMTE2ZDgtNzlkZC00NWI1LWE3MDEtNTkyN2RjOWRjOWRjIn0sInR5cGUiOiJhY2Nlc3MiLCJleHAiOjE2OTI0NTk2NzUsImlhdCI6MTY5MjQ1NjA3NSwianRpIjoiNGQ3N2FlNWYtY2U4Ny00MWFjLTgwNjMtYmVmYWI2YTdkYTMwIn0.wUhC9iuW1HpZzYVqezQ-vxTTYVMEjB8FHfJpPr3_-74"
+                }
+            ],
+            "params": [],
+            "body": {
+                "type": "json",
+                "raw": "{\n  \"friendid\":\"f6c1b690c81d3b365dca45eebad0c6cbf376859427f2ae4a61d14f56ab4d2464\",\n  \"payloads\":[\n    {\n      \"payload_name\":\"water\"\n    }\n  ]\n}",
+                "form": []
+            },
+            "tests": []
+        },
+        {
+            "_id": "2dcecb21-676d-48b3-a9c7-560d047a2edc",
+            "colId": "687f0445-48d5-4fcf-8db8-216463658a7d",
+            "containerId": "",
+            "name": "get_profile",
+            "url": "http://127.0.0.1:8000/get_profile",
+            "method": "GET",
+            "sortNum": 50000,
+            "created": "2023-08-20T06:58:50.459Z",
+            "modified": "2023-08-20T06:58:50.459Z",
+            "headers": [
+                {
+                    "name": "Authorization",
+                    "value": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWJqZWN0Ijp7InVzZXJpZCI6ImY2YzFiNjkwYzgxZDNiMzY1ZGNhNDVlZWJhZDBjNmNiZjM3Njg1OTQyN2YyYWU0YTYxZDE0ZjU2YWI0ZDI0NjQiLCJ0b2tlbmlkIjoiZDIwYTI5NDYtODgyMy00MWY0LTgwMmUtN2I1ZGQwODhlMjk4In0sInR5cGUiOiJhY2Nlc3MiLCJleHAiOjE2OTI0NTk2OTEsImlhdCI6MTY5MjQ1NjA5MSwianRpIjoiZDZmY2VlM2UtNzVmMy00ZjA1LWI2NjItYTE5MDYwNWMxODEyIn0.y_UrMyJ1XGVOEAo3y-pH-JevfOuufZJ1AliCGr-6lyk"
+                }
+            ],
+            "params": [],
+            "tests": []
+        },
+        {
+            "_id": "da1f7c89-4ba9-4df8-967a-8700c5d8dfe0",
+            "colId": "687f0445-48d5-4fcf-8db8-216463658a7d",
+            "containerId": "",
+            "name": "login",
+            "url": "http://127.0.0.1:8000/login",
+            "method": "POST",
+            "sortNum": 60000,
+            "created": "2023-08-20T06:58:54.321Z",
+            "modified": "2023-08-20T06:58:54.321Z",
+            "headers": [],
+            "params": [],
+            "body": {
+                "type": "json",
+                "raw": "{\n  \"username\" : \"test2\",\n  \"password\" : \"password\"\n}",
+                "form": []
+            },
+            "tests": []
+        },
+        {
+            "_id": "be76dc0c-ea6b-4b66-89a7-7a69e1c92c42",
+            "colId": "687f0445-48d5-4fcf-8db8-216463658a7d",
+            "containerId": "",
+            "name": "signin",
+            "url": "http://127.0.0.1:8000/signup",
+            "method": "POST",
+            "sortNum": 70000,
+            "created": "2023-08-20T06:58:57.385Z",
+            "modified": "2023-08-20T06:58:57.385Z",
+            "headers": [],
+            "params": [],
+            "body": {
+                "type": "json",
+                "raw": "{\n  \"username\" : \"test1\",\n  \"password\" : \"password\"\n}",
+                "form": []
+            },
+            "tests": []
+        },
+        {
+            "_id": "030ddef4-8eee-4559-a922-b3720f76eb62",
+            "colId": "687f0445-48d5-4fcf-8db8-216463658a7d",
+            "containerId": "",
+            "name": "logout",
+            "url": "http://127.0.0.1:8000/logout",
+            "method": "POST",
+            "sortNum": 80000,
+            "created": "2023-08-20T06:59:00.496Z",
+            "modified": "2023-08-20T06:59:00.496Z",
+            "headers": [
+                {
+                    "name": "Authorization",
+                    "value": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWJqZWN0Ijp7InVzZXJpZCI6ImNhNWNlNWM5Y2M3ZWQ4YzBlOTNkOTQyOTg0OGFjZjU3ZjE2ZTI3MTkyYmQ0YWQ3ZGEwOWY3MzI5ZTEzMzA1MTgiLCJ0b2tlbmlkIjoiMGZhNDU5NWItYzgyNS00MjQ0LTkzZmMtMzYwYTVlMWEyZGQ4In0sInR5cGUiOiJyZWZyZXNoIiwiZXhwIjoxNzAwMjE0MjY2LCJpYXQiOjE2OTI0MzgyNjYsImp0aSI6IjNhY2MzODE4LTJlNzQtNDYwZS05NjRkLTgyZGU1Nzc1MjU0NiJ9.AysgECMkxfCeVLmRnAZnbUgnhX4sYVwwQQtWC8WP0dU"
+                }
+            ],
+            "params": [],
+            "tests": []
+        },
+        {
+            "_id": "1a35e01a-76bc-4de5-ab6e-4e0bf4eedd0b",
+            "colId": "687f0445-48d5-4fcf-8db8-216463658a7d",
+            "containerId": "",
+            "name": "http://127.0.0.1:8000/change_icon",
+            "url": "http://127.0.0.1:8000/change_icon",
+            "method": "POST",
+            "sortNum": 90000,
+            "created": "2023-08-20T06:59:04.991Z",
+            "modified": "2023-08-20T06:59:04.991Z",
+            "headers": [
+                {
+                    "name": "Authorization",
+                    "value": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWJqZWN0Ijp7InVzZXJpZCI6ImM5ZTYwMDYyOTQwY2Q4MGJjOTExNWZmMjY0Yjk2MjY0MTRlZjRiNjkxMmQxMzQxOTUxYmI0ZDg2YjhkMWUwMGEiLCJ0b2tlbmlkIjoiZTgzYzNhNmUtYTA2My00MTJjLTkyNWYtOTIxOGI4YTg5ZDFhIn0sInR5cGUiOiJhY2Nlc3MiLCJleHAiOjE2OTIzODY1OTgsImlhdCI6MTY5MjM4Mjk5OCwianRpIjoiNmJlMTZmMDAtNzA4Ni00NTU0LWFkMDgtNjJlYTNkMTRlZGJiIn0.XgaamPA7CbReDv3MVjYVqntVY-6LUHIvyc71iVQVoAc"
+                }
+            ],
+            "params": [],
+            "body": {
+                "type": "binary",
+                "raw": "",
+                "form": [],
+                "binary": "d:\\01c8101453954b849c951e968bdf77da3a0b8752b65290cb4950587174bf761e.png"
+            },
+            "tests": []
+        },
+        {
+            "_id": "13ad71c7-b992-48ce-9637-63ac4be7449e",
+            "colId": "687f0445-48d5-4fcf-8db8-216463658a7d",
+            "containerId": "",
+            "name": "delete",
+            "url": "http://127.0.0.1:8000/delete_user",
+            "method": "DELETE",
+            "sortNum": 100000,
+            "created": "2023-08-20T06:59:08.450Z",
+            "modified": "2023-08-20T06:59:08.450Z",
+            "headers": [
+                {
+                    "name": "Authorization",
+                    "value": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWJqZWN0Ijp7InVzZXJpZCI6ImJlMTgzZjE4ODlhYTRlYWY0ZjA1YmI0NzI0ZTkyYjkxMTE5Mjk5ZjYyZDY4MDQ0OGY1ZWQ3NmE3YzIwNDA4MzciLCJ0b2tlbmlkIjoiNTcxZjRlZmEtZGQ3OC00ZDFjLWIyMDUtZWI5MjAxZTQyNGZkIn0sInR5cGUiOiJyZWZyZXNoIiwiZXhwIjoxNzAwMTU1MDM3LCJpYXQiOjE2OTIzNzkwMzcsImp0aSI6ImI3YWU4NWNmLWY5NTYtNGExMi1iODE2LTI4Njg0NTE2M2M0ZCJ9.XjkRCi_Xi4gA2Gf2ghB_RIpzBphDKuetTX1g4prhA30"
+                }
+            ],
+            "params": [],
+            "tests": []
+        },
+        {
+            "_id": "a2f88fa9-54ea-4321-9e9b-5124941676ac",
+            "colId": "687f0445-48d5-4fcf-8db8-216463658a7d",
+            "containerId": "",
+            "name": "ws_token",
+            "url": "http://127.0.0.1:8000/ws_token",
+            "method": "GET",
+            "sortNum": 110000,
+            "created": "2023-08-20T06:59:14.163Z",
+            "modified": "2023-08-20T06:59:14.163Z",
+            "headers": [
+                {
+                    "name": "Authorization",
+                    "value": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWJqZWN0Ijp7InVzZXJpZCI6ImY2OTYwNGYwODAwMWQxYjM4MDBjN2YyNjYxOGRmY2VkNmQyZDcyMzhjZDBiYWY1YTZiOTgzNzMyN2U1YWM0OTRlNGNmZWI4NmM3MDI2MmRiZjJhMzM4ZmRiZGJmYjcwNTAwMTcwOTBhYjk3ZjU3ZDE4ZTZjZGVkNmU5YWQwYTQ1IiwidG9rZW5pZCI6IjNiNGIwY2M4LTEzYjItNDM5My04NThhLTA1ZDgzMjZjMmM1NSJ9LCJ0eXBlIjoiYWNjZXNzIiwiZXhwIjoxNjkyMjkzMzY2LCJpYXQiOjE2OTIyODk3NjYsImp0aSI6Ijg3NmRkYWUzLTMwOWUtNDNjNC1iYTkzLTU2Nzk4MjI3NzdmYyJ9.E3R264mE1HZcRfufPar6mqHhYV-n7B3iJezFvUpeYfU"
+                }
+            ],
+            "params": [],
+            "tests": []
+        },
+        {
+            "_id": "6014992a-a091-4615-8a8c-95c249aff68b",
+            "colId": "687f0445-48d5-4fcf-8db8-216463658a7d",
+            "containerId": "",
+            "name": "refresh_token",
+            "url": "http://127.0.0.1:8000/refresh_token",
+            "method": "GET",
+            "sortNum": 120000,
+            "created": "2023-08-20T06:59:18.683Z",
+            "modified": "2023-08-20T06:59:18.683Z",
+            "headers": [
+                {
+                    "name": "Authorization",
+                    "value": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWJqZWN0Ijp7InVzZXJpZCI6IjQ1MTZlNzBiLTZiM2EtNGI2OS1hMzM5LTI1Njg2YzVhYWEzZSIsInRva2VuaWQiOiJlZDAyMDc4Ny04OTViLTRjYWYtYmJjOC1mZDExZjkwODc1MWYifSwidHlwZSI6InJlZnJlc2giLCJleHAiOjE2OTk3OTIyMjAsImlhdCI6MTY5MjAxNjIyMCwianRpIjoiODZhMTE5MWUtZWM5Ni00ZTkxLWFiNDMtZmQ3MTU2MjNlOTNlIn0.7_BCi55f5Nw6s9ifYlT7oMsM-JSMb0JK6XCucfp46pA"
+                }
+            ],
+            "params": [],
+            "tests": []
+        }
+    ]
+}

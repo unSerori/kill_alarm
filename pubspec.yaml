@@ -37,6 +37,9 @@ dependencies:
   cupertino_icons: ^1.0.2
   http: ^1.1.0
   jwt_decode: ^0.3.1
+  web_socket_channel: ^2.4.0 #追加
+
+  
 
   google_fonts: ^4.0.4
   font_awesome_flutter: ^10.5.0
