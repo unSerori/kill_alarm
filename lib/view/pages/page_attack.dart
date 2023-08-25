@@ -28,7 +28,7 @@ class PageAttack extends StatelessWidget {
           child: Column(
             children: [
               //箱１
-              Components.whiteBox(
+              Componentsless.whiteBox(
                 const Column(
                   children: [
                     Text("起こす相手を選んでね"),
@@ -42,7 +42,7 @@ class PageAttack extends StatelessWidget {
               Container(height: 20, width: 100),
 
               //箱２
-              Components.whiteBox(
+              Componentsless.whiteBox(
                 const Column(
                   children: [
                     Text("何で起こす？"),
