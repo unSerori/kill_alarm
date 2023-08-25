@@ -10,6 +10,7 @@ import 'constant.dart';
 import 'pages/page_attack.dart';
 import 'pages/page_profile.dart';
 import 'pages/page_set_alarm.dart';
+import 'pages/test_req.dart';
 // その他必要なファイル
 
 class MyApp extends StatelessWidget {
@@ -60,8 +61,8 @@ class Components {
     );
   }
 
-  static final square = Container(
-    // 白いぼっくす
+  static final square = Container(  // 白いぼっくす
+
     width: 200,
     height: 200,
     decoration: BoxDecoration(
@@ -81,10 +82,11 @@ class MyStatefulWidget extends StatefulWidget {
 
 class _MyStatefulWidgetState extends State<MyStatefulWidget> {
   // ページをリストに入れる。
-  static const _screens = [
-    PageAttack(),
-    PageSetAlarm(),
-    PageProfile(),
+  static final _screens = [
+    const PageAttack(),
+    const PageSetAlarm(),
+    const PageProfile(),
+    PageServerReq(),
   ];
 
   // ページをインデックスで指定するための変数を初期化。デフォルトで1(真ん中のページ)
@@ -147,6 +149,7 @@ class _MyStatefulWidgetState extends State<MyStatefulWidget> {
                   label: 'profile'),
         ],
       ),
+
 
         // NavBar のデザイン変更しました
         // bottomNavigationBar: Container(
