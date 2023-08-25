@@ -18,7 +18,7 @@ class CustomText extends StatelessWidget {
       textAlign: TextAlign.center,
       text,
       style: GoogleFonts.kosugiMaru(
-        fontWeight: FontWeight.bold,
+        fontWeight: FontWeight.w600,
         fontSize: fontSize,
         color: Color,
       ),

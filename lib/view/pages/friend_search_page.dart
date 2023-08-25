@@ -21,6 +21,7 @@ class _FriendSearchPageState extends State<FriendSearchPage> {
   //名前リスト
   final List<String> _nameList = [
     "せろり",
+    "大橋",
     "よしたか",
     "松本",
     "やづ",
@@ -32,6 +33,7 @@ class _FriendSearchPageState extends State<FriendSearchPage> {
   // ユーザー名リスト
   final List<String> _userList = [
     "un_serori",
+    "rate980",
     "tapi1226",
     "oshiyarenahuo",
     ".yadu_82",
@@ -42,6 +44,7 @@ class _FriendSearchPageState extends State<FriendSearchPage> {
 
   // ユーザーの写真リスト
   final List<String> _imageList = [
+    'assets/profile_image.png',
     'assets/profile_image.png',
     'assets/profile_image.png',
     'assets/profile_image.png',
