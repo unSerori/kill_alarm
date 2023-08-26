@@ -1,8 +1,14 @@
 import 'package:flutter/material.dart';
+import 'dart:io';
+import 'package:http/http.dart' as http;
+import 'dart:convert';
+import 'package:jwt_decode/jwt_decode.dart';
+import 'package:web_socket_channel/web_socket_channel.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:kill_alarm/view/constant.dart';
 import 'package:kill_alarm/view/pages/components/custom_text.dart';
 import 'package:kill_alarm/view/pages/friend_search_page.dart';
+import '../app.dart';
 
 import 'components/custom_profile_image.dart';
 
@@ -14,7 +20,10 @@ class PageProfile extends StatefulWidget {
 }
 
 class _PageProfileState extends State<PageProfile> {
-  // debag
+
+
+
+
   static const List<Tab> myTabs = <Tab>[
     Tab(child: CustomText(text: 'フレンド', fontSize: 14, Color: Constant.black)),
     Tab(child: CustomText(text: '承認待ち', fontSize: 14, Color: Constant.black)),
@@ -22,65 +31,121 @@ class _PageProfileState extends State<PageProfile> {
   ];
 
   // 自分のプロフィール
-  String name = "やづ";
-  String username = ".yadu_82";
+  // String name = "やづ";
+  // String username = ".yadu_82";
   String image = "assets/profile_image.png";
+  // Map<String, String> myProfiel = {};
 
-// フレンド
-  //名前
-  final List<String> _fNameList = [
-    "せろり",
-    "K.Murakami",
-    "田島",
-  ];
-  //ユーザーネーム
-  final List<String> _fUserNameList = [
-    "un_serori",
-    "ecc_teacher",
-    "9.pi",
-  ];
+  // フレンド一覧
+  static var friendList = {};
+  // static var friendList = {
+  //   "msgcode": "11144", 
+  //   "friends": [
+  //     {
+  //       "friendid": "", 
+  //       "friend_userid": "8ffc99a0e2421f2a2e70c97c8af8ae00d5f185233ff5d74f2bbec8f890d323c5", 
+  //       "friend_username": "test1", 
+  //       "friend_displayname": "test1", 
+  //       "friended_at": 1692986587.197176
+  //     }
+  //   ]
+  // };
+  // 承認待ち
+  static var approvalList = {};
+  // {
+  //   "msgcode": "11146", 
+  //   "requests": {
+  //     "ff19472cb2772c1f3e9fdf08266d16aa4f63621014dd425d85e85f054c9f7e8d": {
+  //       "friend_UserName": "test3",
+  //        "friend_DisplayName": "test3", 
+  //        "friend_UserId": "b0d79dcfefb32e9a0bf21599d153a325f7b5e6657376bc627c04e6ee04d0d891"
+  //     }
+  //   }
+  // }
+  // リクエスト
+  static var freReqList = {};
+  // {
+  //   "msgcode": "11146", 
+  //   "requests": {
+  //     "a2bd192fc42f95019385e1e68403d338e5d8faf057bc43671f83826f352eaaa6": {
+  //       "friend_UserName": "test2",
+  //       "friend_DisplayName": "test2",
+  //       "friend_UserId": "086e42a1578061ca395b2ff17f060cd1d5d8970891b7cfc18b00b1f2b10086b6"
+  //     }
+  //   }
+  // }
+
+
+//   // フレンド
+//   //名前
+//   final List<String> _fNameList = [
+//     "せろり",
+//     "K.Murakami",
+//     "田島",
+//   ];
+//   //ユーザーネーム
+//   final List<String> _fUserNameList = [
+//     "un_serori",
+//     "ecc_teacher",
+//     "9.pi",
+//   ];
   //image
   final List<String> _fImageList = [
     'assets/profile_image.png',
     'assets/profile_image.png',
     'assets/profile_image.png',
-  ];
-
-// 承認待ち
-  //名前
-  final List<String> _awaitNameList = [
-    "松本",
-    "jinjin",
-  ];
-  //ユーザーネーム
-  final List<String> _awaitUserNameList = [
-    "oshiyarenahuo",
-    "jinjin2003",
-  ];
-  //image
-  final List<String> _awaitImageList = [
+    'assets/profile_image.png',
+    'assets/profile_image.png',
+    'assets/profile_image.png',
+    'assets/profile_image.png',
+    'assets/profile_image.png',
+    'assets/profile_image.png',
+    'assets/profile_image.png',
+    'assets/profile_image.png',
+    'assets/profile_image.png',
+    'assets/profile_image.png',
+    'assets/profile_image.png',
+    'assets/profile_image.png',
+    'assets/profile_image.png',
     'assets/profile_image.png',
     'assets/profile_image.png',
   ];
 
-// リクエスト
-  //名前
-  final List<String> _reqNameList = [
-    "よしたか",
-  ];
-  //ユーザーネーム
-  final List<String> _reqUserNameList = [
-    "tapi1226",
-  ];
-  //image
-  final List<String> _reqImageList = [
-    'assets/profile_image.png',
-  ];
+// // 承認待ち
+//   //名前
+//   final List<String> _awaitNameList = [
+//     "松本",
+//     "jinjin",
+//   ];
+//   //ユーザーネーム
+//   final List<String> _awaitUserNameList = [
+//     "oshiyarenahuo",
+//     "jinjin2003",
+//   ];
+//   //image
+//   final List<String> _awaitImageList = [
+//     'assets/profile_image.png',
+//     'assets/profile_image.png',
+//   ];
+
+// // リクエスト
+//   //名前
+//   final List<String> _reqNameList = [
+//     "よしたか",
+//   ];
+//   //ユーザーネーム
+//   final List<String> _reqUserNameList = [
+//     "tapi1226",
+//   ];
+//   //image
+//   final List<String> _reqImageList = [
+//     'assets/profile_image.png',
+//   ];
 
   // フレンドwidget
   Widget _friendListView() {
     return ListView.builder(
-        itemCount: _fNameList.length,
+        itemCount: MyWidget.getFriends()["friends"].length,
         itemBuilder: (context, index) {
           return Card(
             color: Constant.sub_color,
@@ -91,6 +156,7 @@ class _PageProfileState extends State<PageProfile> {
                 children: [
                   //写真
                   CustomProfileImage(
+                      //image: NetworkImage(MyWidget.baseUrl() + "/geticon/" + "a"),
                       image: _fImageList[index],
                       size: 55,
                       top: 0,
@@ -105,7 +171,7 @@ class _PageProfileState extends State<PageProfile> {
                       ),
                       // 名前
                       CustomText(
-                          text: _fNameList[index],
+                          text: _fImageList[index],
                           fontSize: 16,
                           Color: Constant.black),
                       const SizedBox(height: 3),
@@ -142,7 +208,7 @@ class _PageProfileState extends State<PageProfile> {
                                       elevation: 3,
                                     ),
                                     //TODO: フレンドを削除する時の処理
-                                    onPressed: () {},
+                                    onPressed: removeRriend(),
                                     child: const CustomText(
                                         text: 'はい',
                                         fontSize: 18,
@@ -246,6 +312,7 @@ class _PageProfileState extends State<PageProfile> {
           );
         });
   }
+
 
   // リクエストwidget
   Widget _requestListView() {
@@ -403,11 +470,11 @@ class _PageProfileState extends State<PageProfile> {
                               children: [
                                 const SizedBox(height: 10),
                                 CustomText(
-                                    text: name,
+                                    text: getProfile()["userid"],
                                     fontSize: 23,
                                     Color: Constant.black),
                                 CustomText(
-                                    text: username,
+                                    text: getProfile()["username"],
                                     fontSize: 19,
                                     Color: Constant.grey),
                               ],
