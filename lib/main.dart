@@ -8,7 +8,7 @@ import 'package:flutter/material.dart';
 // MyAppをいんぽーと
 import 'view/app.dart';
 
-
-void main() {  // MyAppを呼び出し。
+void main() {
+  // MyAppを呼び出し。
   runApp(const MyApp());
 }
