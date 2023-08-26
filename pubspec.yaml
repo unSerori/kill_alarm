@@ -37,7 +37,6 @@ dependencies:
   cupertino_icons: ^1.0.2
   http: ^1.1.0
   jwt_decode: ^0.3.1
-<<<<<<< HEAD
   web_socket_channel: ^2.4.0 #追加
 
   
@@ -46,6 +45,7 @@ dependencies:
   font_awesome_flutter: ^10.5.0
   flutter_native_splash: ^2.3.2
   flutter_riverpod: ^2.3.7
+  flutter_datetime_picker_plus: ^2.0.1
 
 flutter_native_splash:
   color: "#aeeeea"
@@ -53,11 +53,9 @@ flutter_native_splash:
   fullScreen: true
 
 
-=======
   flutter_datetime_picker_plus: ^2.0.1
   google_fonts: ^5.1.0
   
->>>>>>> future/alarm
 dev_dependencies:
   flutter_test:
     sdk: flutter
@@ -81,15 +79,12 @@ flutter:
   uses-material-design: true
 
   # To add assets to your application, add an assets section, like this:
-<<<<<<< HEAD
   assets:
     - assets/icons/
     - assets/profile_image.png
     - assets/
-=======
   # assets:
   #   - assets
->>>>>>> future/alarm
   
   # assets:
   #   - images/a_dot_burr.jpeg

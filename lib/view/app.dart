@@ -18,6 +18,7 @@ import 'dart:convert';
 import 'package:jwt_decode/jwt_decode.dart';
 import 'package:web_socket_channel/web_socket_channel.dart';
 import 'constant.dart';
+import 'pages/test_req.dart';
 
 class MyApp extends StatelessWidget {
   const MyApp({Key? key}) : super(key: key);
@@ -100,8 +101,8 @@ class MyWidget extends StatefulWidget {
     debugPrint(controllerPassword.text); // debug
     debugPrint("ぼたんおしちゃったの？！"); // debug
     var body = {
-      "username" : controllerUserName.text,
-      "password" : controllerPassword.text,
+      "username" : PageServerReq.controllerUserName.text,
+      "password" : PageServerReq.controllerPassword.text,
     };
     List sendReqRes = await sendReq(baseUrl() + "/login", "POST", "", body);  // 
 
@@ -115,8 +116,8 @@ class MyWidget extends StatefulWidget {
       debugPrint("02accessToken[1]: " + accessToken); // debug
       isAuthed = true;
       final Map<String, dynamic> decodedToken = Jwt.parseJwt(accessToken);
-      await WsToken();
-      await getTimer();
+      WsToken();
+      getTimer();
       // if(!WsToken()) {  // ログインが成功したらWSTokenもとってくる。
       //   debugPrint("WSTokenとれなかったぜ；；");
       // }
@@ -160,10 +161,10 @@ class MyWidget extends StatefulWidget {
     debugPrint(controllerPassword.text);
     debugPrint("ぼたんおしちゃったの？！");
     var body = {
-      "username" : controllerUserName.text,
-      "password" : controllerPassword.text,
+      "username" : PageServerReq.controllerUserName.text,
+      "password" : PageServerReq.controllerPassword.text,
     };
-    List sendReqRes = await sendReq(baseUrl() + "/signup", "POST", "", body);  // 
+    List sendReqRes = await  sendReq(baseUrl() + "/signup", "POST", "", body);  // 
 
     if (sendReqRes[0]) {
       debugPrint("01sendReqRes[1]: " + sendReqRes[1]);
@@ -359,7 +360,7 @@ class MyWidget extends StatefulWidget {
       "friendid": "04f0618a587b99aa25fe0e7c996fca90e29538d4809270c638f061bf2f35f309",  // ともだちのID
       "payloads":[
         {
-          "p　ｍｍｍｍンんンんンんンんンんンんンんンんンんンんンayload_name": "water",
+          "ayload_name": "water",
         }
       ]
     };
@@ -725,14 +726,11 @@ class MyWidget extends StatefulWidget {
   // フレンドリクエスト
   static wsFriendReq()async{//String friendid
     // friendidを取る
-    String friend_userid = await getUserid(controllerFriendID.text);
+    String friend_userid = await getUserid(PageServerReq.controllerFriendID.text);
     if(friend_userid.isEmpty) {
       debugPrint("ユーザーが存在しません。");
       return;  // 早期リターン
     }
-
-    debugPrint(friend_userid);
-    debugPrint(controllerFriendID.text);
 
     // 送る中身
     var friendReq = {
@@ -937,7 +935,7 @@ class _MyStatefulWidgetState extends State<MyStatefulWidget> {
   static final _screens = [
     const PageAttack(),
     const PageSetAlarm(),
-    //const PageProfile(),
+    const PageProfile(),
     PageServerReq(),
   ];
 
@@ -999,13 +997,13 @@ class _MyStatefulWidgetState extends State<MyStatefulWidget> {
                     size: 22,
                   ),
                   label: 'profile'),
-          //  NavigationDestination(
-          //     icon: ImageIcon(
-          //           AssetImage('assets/icons/user_icon.png'),
-          //           color: Constant.black,
-          //           size: 22,
-          //         ),
-          //         label: 'profile'),
+           NavigationDestination(
+              icon: ImageIcon(
+                    AssetImage('assets/icons/user_icon.png'),
+                    color: Constant.black,
+                    size: 22,
+                  ),
+                  label: 'profile'),
         ],
       ),
 

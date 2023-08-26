@@ -65,9 +65,9 @@ class PageServerReq extends StatelessWidget {
   );
   
   // fieldの中身を取得
-  final controllerUserName = TextEditingController();  // ユーザー名
-  final controllerPassword = TextEditingController();  // パスワード
-  final controllerFriendID = TextEditingController(); // debug // フレンド入力 // 実際にはボタン処理ではない
+  static final controllerUserName = TextEditingController();  // ユーザー名
+  static final controllerPassword = TextEditingController();  // パスワード
+  static final controllerFriendID = TextEditingController(); // debug // フレンド入力 // 実際にはボタン処理ではない
 
 
   // ボタンを押したときの処理

@@ -191,8 +191,7 @@ class ComponentsAttack {
       );
     } else {
       return Container();
-    }
-    ;
+    };
   }
 }
 
@@ -254,6 +253,8 @@ class PageSetAlarm_2 extends StatefulWidget {
 }
 
 class _PageSetAlarmState_2 extends State<PageSetAlarm_2> {
+  // ログイン前提の処理で使う。
+  static bool isAuthed = false;  
   //ボタン管理用の変数
   static bool sound = false;
   static bool water = false;
@@ -307,6 +308,7 @@ class _PageSetAlarmState_2 extends State<PageSetAlarm_2> {
   }
 
   update_payload() {
+    
     if (_boxAlarm.timerData["timers"] != null) {
       final timersList = _boxAlarm.timerData["timers"] as List<dynamic>;
       final lastTimer = timersList.isNotEmpty ? timersList.last : null;
@@ -360,9 +362,9 @@ class _PageSetAlarmState_2 extends State<PageSetAlarm_2> {
         debugPrint("ぼたんおしちゃったの？！");
         var body = _boxAlarm.timerData;  // タイマーの設定データ
 
-        debugPrint(timerData.toString());
+        debugPrint(_boxAlarm.timerData.toString());
 
-        List sendReqRes = await sendReq(baseUrl() + "/update_timer", "POST", accessToken, body);  // 
+        List sendReqRes = sendReq(MyWidget.baseUrl() + "/update_timer", "POST", MyWidget.accessToken, body);  // 
 
         if (sendReqRes[0]) {
           debugPrint("sendReqRes[1]: " + sendReqRes[1]);
@@ -377,6 +379,51 @@ class _PageSetAlarmState_2 extends State<PageSetAlarm_2> {
       }
     }
   }
+
+    // リクエストを投げる万能関数
+  static sendReq(String reqUrl, String method, String bearer, Map<String, dynamic> body) async {
+    // リクエストのヘッダ
+    var headersList = {
+      'Accept': '*/*',
+      'User-Agent': 'Thunder Client (https://www.thunderclient.com)',
+      'Content-Type': 'application/json',
+      'Authorization': 'Bearer ' + bearer, 
+    };
+    // リクエストurlをUri.parse()でuriにパース パース...URLの文字列を役割ごとに分解すること
+    var uri = Uri.parse(reqUrl);
+      // debugPrint("reqUrl: " + reqUrl);
+      // debugPrint("uri: " + uri.toString());
+      // debugPrint("uri type: " + uri.runtimeType.toString());
+
+    // リクエスト作成
+    var req = http.Request(method, uri);  // HTTPリクエストメソッドの種類とuriから
+      // debugPrint(req.toString());
+    req.headers.addAll(headersList);  // header情報を追加
+      // debugPrint(req.toString());
+    req.body = json.encode(body);  // bodyをjson形式に変換
+      // debugPrint(req.toString());
+
+    try {
+
+      // HTTPリクエストを送信。 seconds: 5 で指定した秒数応答がなかったらタイムアウトで例外を発生させる
+      var res = await req.send().timeout(const Duration(seconds: 5));
+      // レスポンスをストリームから文字列に変換して保存
+      final resBody = await res.stream.bytesToString();
+
+      // ステータスコードが正常ならtrueと内容を返す
+      if (res.statusCode >= 200 && res.statusCode < 300) {
+        return [true, resBody];
+      } else {
+        return [false, res.statusCode.toString(), resBody];
+      }
+
+    } catch (e) {  // タイムアウトしたとき。
+
+      return [false, "おうとうないよ；；"];
+
+    }
+  }
+
 
   @override
   void initState() {
