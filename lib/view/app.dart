@@ -17,6 +17,7 @@ import 'package:http/http.dart' as http;
 import 'dart:convert';
 import 'package:jwt_decode/jwt_decode.dart';
 import 'package:web_socket_channel/web_socket_channel.dart';
+import 'constant.dart';
 
 class MyApp extends StatelessWidget {
   const MyApp({Key? key}) : super(key: key);
@@ -759,7 +760,6 @@ class MyWidget extends StatefulWidget {
   @override
   State<MyWidget> createState() => _MyWidgetState();
 }
-
 class _MyWidgetState extends State<MyWidget> {
   @override
   Widget build(BuildContext context) {
@@ -767,30 +767,74 @@ class _MyWidgetState extends State<MyWidget> {
   }
 }
 
+class Componentsful extends StatefulWidget {
+  const Componentsful({super.key});
+  
+  @override
+  _Componentsful createState() => _Componentsful();
 
-class Components {
+
+  static Widget typeButton(String word,bool typebool,Function(bool) onTap,{Color typecolor = Constant.sub_color,}){
+      return ElevatedButton(
+        style: ElevatedButton.styleFrom(
+          backgroundColor: typecolor,
+          shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(10)),
+          elevation: 3,
+        ),
+        onPressed: () {
+          onTap(!typebool);
+        },
+        // child:  CustomText(
+        //   text: word, fontSize: 18, Color: Constant.black
+        // ),
+        child: Text("aho"),
+      );
+  }
+}
+
+class _Componentsful extends State<Componentsful> {
+  bool isTypeButtonPressed = false;
+
+  void _handleTypeButtonTap(bool newValue) {
+    setState(() {
+      isTypeButtonPressed = newValue;
+    });
+  }  
+  
+  @override
+  Widget build(BuildContext context) {
+    return const Placeholder();
+  }
+}
+
+
+class Componentsless {
   // こんぽーねんと？
 
   // widgetはColumnやRowを想定してるよ。
-  static Widget whiteBox(
-    Widget widget,
-    double _screenSizeWidth, {
-    double widthRatio = 0.8,
-    double widthRatsio = 0.8,
-    double paddingHor = 10,
-    double paddingVer = 25,
-  }) {
+  static Widget whiteBox(Widget widget, double _screenSizeWidth,
+      {double widthRatio = 0.8,
+      double widthRatsio = 0.8,
+      double paddingHor = 10,
+      double paddingVer = 25,
+      Color bordercolor = Colors.white}) {
     return Container(
       width: _screenSizeWidth * widthRatio,
       padding:
           EdgeInsets.symmetric(horizontal: paddingHor, vertical: paddingVer),
       decoration: BoxDecoration(
+        border: Border.all(
+          color: bordercolor,
+          width: 5,
+        ),
         color: Colors.white,
-        borderRadius: BorderRadius.circular(10),
+        borderRadius: BorderRadius.circular(20),
         boxShadow: const [
           BoxShadow(
             color: Colors.grey, //色
             spreadRadius: 1,
+            //spreadRadius: 1,
             blurRadius: 1,
             offset: Offset(0, 2),
           ),
@@ -800,8 +844,9 @@ class Components {
     );
   }
 
-  static final square = Container(  // 白いぼっくす
 
+  static final square = Container(
+    // 白いぼっくす
     width: 200,
     height: 200,
     decoration: BoxDecoration(
@@ -938,4 +983,4 @@ class _MyStatefulWidgetState extends State<MyStatefulWidget> {
         );
   }
 }
-// github通知テスト 
+// github通知テスト
