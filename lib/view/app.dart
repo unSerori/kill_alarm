@@ -41,6 +41,7 @@ class MyWidget extends StatefulWidget {
   // httpTokens
   static String refToken = "";  // 
   static String accessToken = "";  // 
+  static var friendList = {};
   // static Map<String, dynamic> timerData = {};
   static Map<String, dynamic> timerData = {
   "timers" : [
@@ -261,6 +262,91 @@ class MyWidget extends StatefulWidget {
     }
   }
 
+  // フレンド一覧  // GET, header accessToken を使ってプロフィール(useridとusername)を取得する。
+  static getFriends()async{
+    if (!isAuthed) {
+      debugPrint("Authentication.");
+      return;
+    }
+    // body
+    var body = {
+      "": ""
+    };
+
+    List sendReqRes = await sendReq(baseUrl() + "/get_friends", "GET", accessToken, body);  // 
+
+    if (sendReqRes[0]) {
+      debugPrint("01sendReqRes[1]: " + sendReqRes[1]);
+      Map<String, dynamic> jsonDecodeData = json.decode(sendReqRes[1]);
+      String userid = jsonDecodeData["userid"].toString();
+      String username = jsonDecodeData["username"].toString();   
+      debugPrint("userid: " + userid);
+      debugPrint("username: " + username);
+      return sendReqRes[1];
+    } else{
+      debugPrint("No response. " + sendReqRes[1]);
+      debugPrint("sendReqRes[2]: " + sendReqRes[2]);
+      return sendReqRes[1];
+    }
+  }
+
+  // 承認待ち  // GET, header accessToken を使ってプロフィール(useridとusername)を取得する。
+  static getRecvdRequests()async{
+    if (!isAuthed) {
+      debugPrint("Authentication.");
+      return;
+    }
+    var body = {
+      "": ""
+    };
+
+    List sendReqRes = await sendReq(baseUrl() + "/get_recvd_requests", "GET", accessToken, body);  // 
+
+    if (sendReqRes[0]) {
+      debugPrint("sendReqRes[1]: " + sendReqRes[1]);
+      Map<String, dynamic> jsonDecodeData = json.decode(sendReqRes[1]);
+      String userid = jsonDecodeData["userid"].toString();
+      String username = jsonDecodeData["username"].toString();   
+      debugPrint("userid: " + userid);
+      debugPrint("username: " + username);
+      return sendReqRes[1];
+    } else{
+      debugPrint("No response. " + sendReqRes[1]);
+      debugPrint("sendReqRes[2]: " + sendReqRes[2]);
+      return sendReqRes[1];
+    }
+  }
+
+  // 承認待ち  // GET, header accessToken を使ってプロフィール(useridとusername)を取得する。
+  static getSendedRequests()async{
+    if (!isAuthed) {
+      debugPrint("Authentication.");
+      return;
+    }
+    // body
+    var body = {
+      "": ""
+    };
+
+    List sendReqRes = await sendReq(baseUrl() + "/get_sended_requests", "GET", accessToken, body);  // 
+
+    if (sendReqRes[0]) {
+      debugPrint("sendReqRes[1]: " + sendReqRes[1]);
+      Map<String, dynamic> jsonDecodeData = json.decode(sendReqRes[1]);
+      String userid = jsonDecodeData["userid"].toString();
+      String username = jsonDecodeData["username"].toString();   
+      debugPrint("userid: " + userid);
+      debugPrint("username: " + username);
+      return sendReqRes[1];
+    } else{
+      debugPrint("No response. " + sendReqRes[1]);
+      debugPrint("sendReqRes[2]: " + sendReqRes[2]);
+      return sendReqRes[1];
+    }
+  }
+
+
+
   // 友達爆弾  // POST, header accessToken と body friendid payloads を使って友達爆弾をセットする。
   static wakeup()async{
     if (!isAuthed) {
@@ -272,12 +358,12 @@ class MyWidget extends StatefulWidget {
       "friendid": "04f0618a587b99aa25fe0e7c996fca90e29538d4809270c638f061bf2f35f309",  // ともだちのID
       "payloads":[
         {
-          "payload_name": "water",
+          "p　ｍｍｍｍンんンんンんンんンんンんンんンんンんンんンayload_name": "water",
         }
       ]
     };
     
-    List sendReqRes = await sendReq(baseUrl() + "/wakeup", "POST", accessToken, body);  // 
+   List sendReqRes = await sendReq(baseUrl() + "/wakeup", "POST", accessToken, body);  // 
 
     if (sendReqRes[0]) {
       debugPrint("01sendReqRes[1]: " + sendReqRes[1]);
@@ -506,6 +592,9 @@ class MyWidget extends StatefulWidget {
       case "11111":  // 認証成功
         wsTokenAuth = true;
         break;
+      case "11144":  // フレンド一覧通知
+        friendList = decode_dict["friends"];
+        
     }
   }
 
@@ -653,15 +742,15 @@ class MyWidget extends StatefulWidget {
     _channel.sink.add(json.encode(friendReq)); 
   }
 
-  // フレンド一覧取得
-  static getFriends() async {
-    // 送る中身
-    var data = {
-      "msgtype" : "get_friends",
-    };
-    // 送る
-    _channel.sink.add(json.encode(data));
-  }
+  // // フレンド一覧取得
+  // static getFriends() async {
+  //   // 送る中身
+  //   var data = {
+  //     "msgtype" : "get_friends",
+  //   };
+  //   // 送る
+  //   _channel.sink.add(json.encode(data));
+  // }
 
   // リクエスト承認
   static acceptRequest() async{
@@ -733,27 +822,6 @@ class MyWidget extends StatefulWidget {
     // 送る
     _channel.sink.add(json.encode(data));
   }
-
-  // 受信済みフレンド一覧
-  static recvedRequests()async{
-    // 送る中身
-    var data = {
-      "msgtype" : "recved_requests",
-    };
-    // 送る
-    _channel.sink.add(json.encode(data));
-  }
-
-  // 送信済みフレンド一覧
-  static sendedRequests()async{
-    // 送る中身
-    var data = {
-      "msgtype" : "sended_requests",
-    };
-    // 送る
-    _channel.sink.add(json.encode(data));
-  }
-
 
 
   @override
@@ -879,13 +947,6 @@ class _MyStatefulWidgetState extends State<MyStatefulWidget> {
                     color: Constant.black,
                   ),
                   label: 'alarm'),
-          //  NavigationDestination(
-          //     icon: ImageIcon(
-          //           AssetImage('assets/icons/user_icon.png'),
-          //           color: Constant.black,
-          //           size: 22,
-          //         ),
-          //         label: 'profile'),
            NavigationDestination(
               icon: ImageIcon(
                     AssetImage('assets/icons/user_icon.png'),
@@ -893,6 +954,13 @@ class _MyStatefulWidgetState extends State<MyStatefulWidget> {
                     size: 22,
                   ),
                   label: 'profile'),
+          //  NavigationDestination(
+          //     icon: ImageIcon(
+          //           AssetImage('assets/icons/user_icon.png'),
+          //           color: Constant.black,
+          //           size: 22,
+          //         ),
+          //         label: 'profile'),
         ],
       ),
 

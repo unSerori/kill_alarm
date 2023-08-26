@@ -37,7 +37,7 @@ class _PageProfileState extends State<PageProfile> {
   // Map<String, String> myProfiel = {};
 
   // フレンド一覧
-  static var friendList = {};
+  //static var friendList = {};
   // static var friendList = {
   //   "msgcode": "11144", 
   //   "friends": [
@@ -111,41 +111,47 @@ class _PageProfileState extends State<PageProfile> {
     'assets/profile_image.png',
   ];
 
-// // 承認待ち
-//   //名前
-//   final List<String> _awaitNameList = [
-//     "松本",
-//     "jinjin",
-//   ];
-//   //ユーザーネーム
-//   final List<String> _awaitUserNameList = [
-//     "oshiyarenahuo",
-//     "jinjin2003",
-//   ];
-//   //image
-//   final List<String> _awaitImageList = [
-//     'assets/profile_image.png',
-//     'assets/profile_image.png',
-//   ];
+// 承認待ち
+  //名前
+  final List<String> _awaitNameList = [
+    "松本",
+    "jinjin",
+  ];
+  //ユーザーネーム
+  final List<String> _awaitUserNameList = [
+    "oshiyarenahuo",
+    "jinjin2003",
+  ];
+  //image
+  final List<String> _awaitImageList = [
+    'assets/profile_image.png',
+    'assets/profile_image.png',
+  ];
 
-// // リクエスト
-//   //名前
-//   final List<String> _reqNameList = [
-//     "よしたか",
-//   ];
-//   //ユーザーネーム
-//   final List<String> _reqUserNameList = [
-//     "tapi1226",
-//   ];
-//   //image
-//   final List<String> _reqImageList = [
-//     'assets/profile_image.png',
-//   ];
+// リクエスト
+  //名前
+  final List<String> _reqNameList = [
+    "よしたか",
+  ];
+  //ユーザーネーム
+  final List<String> _reqUserNameList = [
+    "tapi1226",
+  ];
+  //image
+  final List<String> _reqImageList = [
+    'assets/profile_image.png',
+  ];
 
   // フレンドwidget
   Widget _friendListView() {
     return ListView.builder(
-        itemCount: MyWidget.getFriends()["friends"].length,
+        
+        // itemCount: MyWidget.getFriends()["friends"].length,
+        // itemCount: () {
+        //   MyWidget.getFriends();
+        //   return MyWidget.friendList.length;
+        // },
+        itemCount: MyWidget.friendList.length,
         itemBuilder: (context, index) {
           return Card(
             color: Constant.sub_color,
@@ -156,8 +162,8 @@ class _PageProfileState extends State<PageProfile> {
                 children: [
                   //写真
                   CustomProfileImage(
-                      //image: NetworkImage(MyWidget.baseUrl() + "/geticon/" + "a"),
                       image: _fImageList[index],
+                      //image: AssetImage('assets/profile_image.png'),
                       size: 55,
                       top: 0,
                       left: 0,
@@ -177,7 +183,7 @@ class _PageProfileState extends State<PageProfile> {
                       const SizedBox(height: 3),
                       // ユーザーネーム
                       CustomText(
-                          text: _fUserNameList[index],
+                          text: MyWidget.getFriends()["friends"][index]["friend_username"],
                           fontSize: 13,
                           Color: Constant.grey),
                     ],
@@ -208,7 +214,7 @@ class _PageProfileState extends State<PageProfile> {
                                       elevation: 3,
                                     ),
                                     //TODO: フレンドを削除する時の処理
-                                    onPressed: removeRriend(),
+                                    onPressed: MyWidget.removeRriend(MyWidget.getFriends()["friends"][index]["friend_userid"]),
                                     child: const CustomText(
                                         text: 'はい',
                                         fontSize: 18,
@@ -470,11 +476,13 @@ class _PageProfileState extends State<PageProfile> {
                               children: [
                                 const SizedBox(height: 10),
                                 CustomText(
-                                    text: getProfile()["userid"],
+                                    //text: MyWidget.getProfile()["userid"],
+                                    text: "aaaaaaaa",
                                     fontSize: 23,
                                     Color: Constant.black),
                                 CustomText(
-                                    text: getProfile()["username"],
+                                    //text: MyWidget.getProfile()["username"],
+                                    text: "bbbbbbbbbb",
                                     fontSize: 19,
                                     Color: Constant.grey),
                               ],
